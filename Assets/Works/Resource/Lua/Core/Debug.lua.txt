@@ -1,0 +1,86 @@
+--日志系统--
+Debug = {}
+
+--普通日志--
+function Debug.Log(...)
+	local info = Debug.Parse(...)
+	print(info)
+end
+--警告日志--
+function Debug.Warning(...)
+	local info = Debug.Parse(...)
+	Debug.PrintTrace(info)
+end
+--错误日志--
+function Debug.Error(...)
+	local info = Debug.Parse(...)
+	error(info)
+end
+
+--普通日志--
+function Debug.LogFormat(content, ...)
+	local info = string.format(content, ...)
+	print(info)
+end
+--警告日志--
+function Debug.WarningFormat(content, ...)
+	local info = string.format(content, ...)
+	Debug.PrintTrace(info)
+end
+--错误日志--
+function Debug.ErrorFormat(content, ...)
+	local info = string.format(content, ...)
+	error(info)
+end
+
+
+--输出堆栈信息
+function Debug.PrintTrace(info)
+    local _trace = debug.traceback 
+    local _t_concat = table.concat 
+    local out = {''}
+
+    function print_stack(...)
+        local n = select('#', ...) 
+        for i=1, n, 1 do 
+            local v = select(i,...) 
+            out[#out+1] = tostring(v) 
+        end 
+        out[#out+1] = '\n' 
+        out[#out+1] = _trace("", 2) 
+        _t_concat(out,' ')
+    end
+    
+    print_stack(info)
+    
+    local log = "LUA: "
+    for i=1, #out do
+    	log = log..out[i]  	
+    end
+    UE.Debug.LogWarning(log)
+end
+
+--转换可变长参数为字符串
+function Debug.Parse(...)
+	local stringcat = ""
+	for k, v in ipairs({...}) do 
+		local subString = ""
+		if type(v) == "boolean" then
+			subString = (v == true and "true" or "false")
+		elseif type(v) == "number"  then
+			subString = tostring(v)
+		elseif type(v) == "table" then
+			subString = tostring(v)
+		elseif type(v) == "string" then
+			subString = v
+		elseif v.ToString then
+			subString = v:ToString()
+		else
+			error("should never get here.")
+		end
+		stringcat = stringcat .. subString
+	end
+	return stringcat
+end
+
+return Debug

@@ -1,0 +1,32 @@
+
+--DEMO--
+local Demo = 
+{
+	IsSendLogin = false,
+}
+
+local this = Demo
+
+--普通日志--
+function Demo.Update()
+	if(UE.Input.GetKeyDown("space")) then
+		if(MF.Network.NetworkManager.Instance.State == MF.Network.ENetworkState.Disconnect) then
+			MF.Network.NetworkManager.Instance:ConnectServer("127.0.0.1", 10002, typeof(CS.ProtoPackageParser))
+		end
+	end
+
+	if(MF.Network.NetworkManager.Instance.State == MF.Network.ENetworkState.Connected) then
+		if(this.IsSendLogin == false) then
+			this.IsSendLogin = true
+			local msg = 
+			{
+				RpcId = 100,
+				Account = "hello",
+				Password = "1234",
+			}
+			NetSystem.SendMessage(ENetMessageID.C2R_Login, msg)
+		end
+	end
+end
+
+return Demo

@@ -1,0 +1,18 @@
+--代码由工具生成，请勿手动修改!--
+
+--网络消息ID--
+ENetMessageID = 
+{
+	C2R_Login = 10001,
+	R2C_Login = 10002,
+}
+
+--消息转换--
+function MessageIDToName(msgID)
+	for k,v in pairs(ENetMessageID) do
+		if(v == msgID) then
+			return k
+		end
+	end
+	Debug.Error("Not found msgID ", msgID)
+end

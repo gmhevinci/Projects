@@ -1,0 +1,5 @@
+--命名空间简化--
+
+UE = CS.UnityEngine
+MF = CS.MotionFramework
+SYS = CS.System
