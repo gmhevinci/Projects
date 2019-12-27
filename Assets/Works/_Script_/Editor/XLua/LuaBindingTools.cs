@@ -186,7 +186,7 @@ public static class LuaBindingTools
 		typeof(Action<long>),
 		typeof(Action<UnityEngine.GameObject>),
 		typeof(Action<UnityEngine.GameObject, int>),
-		typeof(Action<MotionFramework.Resource.Asset>),
+		typeof(Action<MotionFramework.Resource.AssetOperationHandle>),
 		typeof(System.Collections.IEnumerator),
 		typeof(UnityEngine.Events.UnityAction),
 		typeof(UnityEngine.Events.UnityAction<string>),

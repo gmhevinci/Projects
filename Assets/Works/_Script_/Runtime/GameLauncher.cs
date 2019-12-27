@@ -14,7 +14,7 @@ public class GameLauncher : MonoBehaviour
 	public static GameLauncher Instance = null;
 
 	[Tooltip("资源系统的加载模式")]
-	public EAssetLoadMode AssetLoadMode = EAssetLoadMode.ResourceMode;
+	public EAssetSystemMode AssetLoadMode = EAssetSystemMode.EditorMode;
 
 	void Awake()
 	{
@@ -106,17 +106,17 @@ public class GameLauncher : MonoBehaviour
 	private void RegisterAndRunAllGameModule()
 	{
 		// 设置资源系统加载模式
-		AssetSystem.AssetLoadMode = AssetLoadMode;
+		AssetSystem.SystemMode = AssetLoadMode;
 
 		// 设置资源系统根路径
 		AssetSystem.AssetRootPath = GameDefine.StrAssetRootPath;
 
-		// 设置Bundle接口
-		if(AssetLoadMode == EAssetLoadMode.BundleMode)
+		// 设置AssetBundle服务接口
+		if(AssetLoadMode == EAssetSystemMode.BundleMode)
 		{
-			PatchBundleMethod method = new PatchBundleMethod();
-			method.LoadManifestFile();
-			AssetSystem.BundleMethod = method;
+			BundleServices services = new BundleServices();
+			services.LoadManifestFile();
+			AssetSystem.BundleServices = services;
 		}
 
 		// 注册所有游戏模块
