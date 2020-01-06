@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using MotionFramework.Network;
 
-/// <summary>
-/// Protobuf网络消息解析器
-/// </summary>
-public class ProtoPackageParser : DefaultPackageParser
+public class ProtoPackageCoder : DefaultPackageCoder
 {
-	public ProtoPackageParser()
+	public ProtoPackageCoder()
 	{
 		PackageSizeFieldType = EPackageSizeFieldType.UShort;
 		MessageIDFieldType = EMessageIDFieldType.UShort;

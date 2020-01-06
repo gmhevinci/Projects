@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MotionFramework;
-using MotionFramework.Debug;
+using MotionFramework.Console;
 using MotionFramework.Resource;
 using MotionFramework.Event;
 using MotionFramework.Config;
 using MotionFramework.Audio;
 using MotionFramework.Network;
+using MotionFramework.Patch;
+using MotionFramework.Scene;
+using MotionFramework.Pool;
 
 public class GameLauncher : MonoBehaviour
 {
 	public static GameLauncher Instance = null;
+	private IMotionEngine _motionEngine;
+
+	[Tooltip("是否跳过CDN服务器")]
+	public bool SkipCDN = true;
 
 	[Tooltip("资源系统的加载模式")]
-	public EAssetSystemMode AssetLoadMode = EAssetSystemMode.EditorMode;
+	public EAssetSystemMode AssetSystemMode = EAssetSystemMode.ResourcesMode;
 
 	void Awake()
 	{
@@ -24,43 +31,31 @@ public class GameLauncher : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		// 注册日志系统
-		LogSystem.RegisterCallback(HandleMotionEngineLog);
+		AppLog.RegisterCallback(HandleMotionFrameworkLog);
 
-		// 设置协程脚本
-		AppEngine.Instance.InitCoroutineBehaviour(this);
+		// 初始化框架
+		_motionEngine = AppEngine.Instance;
+		_motionEngine.Initialize(this);
 
-		// 初始化调试控制台
+		// 初始化控制台
 		if (Application.isEditor || Debug.isDebugBuild)
-			DebugConsole.Init();
+			AppConsole.Initialize();
 
 		// 初始化应用
 		InitAppliaction();
 	}
 	void Start()
 	{
-		RegisterAndRunAllGameModule();
+		CreateGameModules();
 	}
 	void Update()
 	{
-		AppEngine.Instance.Update();
-	}
-	void LateUpdate()
-	{
-		AppEngine.Instance.LateUpdate();
-	}
-	void OnApplicationQuit()
-	{
-	}
-	void OnApplicationFocus(bool focusStatus)
-	{
-	}
-	void OnApplicationPause(bool pauseStatus)
-	{
+		_motionEngine.OnUpdate();
 	}
 	void OnGUI()
 	{
 		if (Application.isEditor || Debug.isDebugBuild)
-			DebugConsole.DrawGUI();
+			AppConsole.DrawGUI();
 	}
 
 	private void InitAppliaction()
@@ -75,8 +70,10 @@ public class GameLauncher : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-	// 日志回调
-	private void HandleMotionEngineLog(ELogType logType, string log)
+	/// <summary>
+	/// 监听框架日志
+	/// </summary>
+	private void HandleMotionFrameworkLog(ELogType logType, string log)
 	{
 		if (logType == ELogType.Log)
 		{
@@ -100,31 +97,31 @@ public class GameLauncher : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// 注册所有游戏模块
-	/// </summary>
-	private void RegisterAndRunAllGameModule()
+	private void CreateGameModules()
 	{
-		// 设置资源系统加载模式
-		AssetSystem.SystemMode = AssetLoadMode;
+		// 创建事件管理器
+		AppEngine.Instance.CreateModule<EventManager>();
 
-		// 设置资源系统根路径
-		AssetSystem.AssetRootPath = GameDefine.StrAssetRootPath;
+		// 创建网络管理器
+		AppEngine.Instance.CreateModule<NetworkManager>();
 
-		// 设置AssetBundle服务接口
-		if(AssetLoadMode == EAssetSystemMode.BundleMode)
-		{
-			BundleServices services = new BundleServices();
-			services.LoadManifestFile();
-			AssetSystem.BundleServices = services;
-		}
+		// 创建资源管理器
+		var resourceCreateParam = new ResourceManager.CreateParameters();
+		resourceCreateParam.AssetRootPath = GameDefine.AssetRootPath;
+		resourceCreateParam.AssetSystemMode = AssetSystemMode;
+		resourceCreateParam.BundleServices = null;
+		AppEngine.Instance.CreateModule<ResourceManager>(resourceCreateParam);
 
-		// 注册所有游戏模块
-		AppEngine.Instance.RegisterModule(EventManager.Instance);
-		AppEngine.Instance.RegisterModule(ResourceManager.Instance);
-		AppEngine.Instance.RegisterModule(ConfigManager.Instance);
-		AppEngine.Instance.RegisterModule(AudioManager.Instance);
-		AppEngine.Instance.RegisterModule(NetworkManager.Instance);
-		AppEngine.Instance.RegisterModule(LuaManager.Instance);
+		// 创建音频管理器
+		AppEngine.Instance.CreateModule<AudioManager>();
+
+		// 创建场景管理器
+		AppEngine.Instance.CreateModule<SceneManager>();
+
+		// 创建对象池管理器
+		AppEngine.Instance.CreateModule<PoolManager>();
+
+		// 直接进入游戏
+		AppEngine.Instance.CreateModule<LuaManager>();	
 	}
 }

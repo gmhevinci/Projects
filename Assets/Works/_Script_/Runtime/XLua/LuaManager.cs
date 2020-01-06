@@ -5,19 +5,17 @@ using System;
 using UnityEngine;
 using XLua;
 using MotionFramework;
-using MotionFramework.Debug;
+using MotionFramework.Console;
 using MotionFramework.Resource;
 using MotionFramework.Network;
 
-public class LuaManager : IModule
+public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 {
 	[CSharpCallLua]
 	public delegate string LanguageDelegate(string key);
 	[CSharpCallLua]
 	public delegate void NetMessageDelegate(int msgID, byte[] bytes);
 	
-
-	public static readonly LuaManager Instance = new LuaManager();
 
 	private readonly LuaEnv _luaEnv = new LuaEnv();
 	private readonly TimerBase _tickTimer = new RepeatTimer(0, 1f);
@@ -29,10 +27,10 @@ public class LuaManager : IModule
 	private NetMessageDelegate _funNetMessage;
 
 
-	public void Awake()
+	void IMotionModule.OnCreate(object createParam)
 	{
 	}
-	public void Start()
+	void IMotionModule.OnStart()
 	{
 		_luaEnv.AddLoader(CustomLoaderMethod);
 		_luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
@@ -48,7 +46,7 @@ public class LuaManager : IModule
 		// 监听热更网络数据
 		NetworkManager.Instance.HotfixPackageCallback += OnHandleHotfixPackage;
 	}
-	public void Update()
+	void IMotionModule.OnUpdate()
 	{
 		// Update
 		_funUpdate?.Invoke();
@@ -57,12 +55,9 @@ public class LuaManager : IModule
 		if (_tickTimer.Update(Time.unscaledDeltaTime))
 			_luaEnv.Tick();
 	}
-	public void LateUpdate()
+	void IMotionModule.OnGUI()
 	{
-	}
-	public void OnGUI()
-	{
-		DebugConsole.GUILable($"[{nameof(LuaManager)}] Lua memory : {_luaEnv.Memroy}Kb");
+		AppConsole.GUILable($"[{nameof(LuaManager)}] Lua memory : {_luaEnv.Memroy}Kb");
 	}
 
 	/// <summary>
@@ -84,7 +79,7 @@ public class LuaManager : IModule
 		package.IsHotfixPackage = true;
 		package.MsgID = msgID;
 		package.BodyBytes = bytes;
-		NetworkManager.Instance.SendMsg(package);
+		NetworkManager.Instance.SendMessage(package);
 	}
 
 	/// <summary>
@@ -111,7 +106,7 @@ public class LuaManager : IModule
 		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName);
 		if(asset == null)
 		{
-			LogSystem.Log(ELogType.Warning, $"Failed to load lua file : {resName}");
+			AppLog.Log(ELogType.Warning, $"Failed to load lua file : {resName}");
 			return null;
 		}
 		return asset.bytes;

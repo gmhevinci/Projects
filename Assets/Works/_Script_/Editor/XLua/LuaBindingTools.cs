@@ -14,23 +14,13 @@ public static class LuaBindingTools
 		{
 			List<Type> result = new List<Type>();
 
-			Type[] allTypes = Assembly.Load("MotionEngine").GetTypes();
+			Type[] allTypes = Assembly.Load("MotionFramework").GetTypes();
 			for (int i = 0; i < allTypes.Length; i++)
 			{
 				Type type = allTypes[i];
 				if (string.IsNullOrEmpty(type.Namespace))
 					continue;
-				if (type.Namespace.Contains("MotionFramework"))
-					result.Add(type);
-			}
-
-			allTypes = Assembly.Load("MotionGame").GetTypes();
-			for (int i = 0; i < allTypes.Length; i++)
-			{
-				Type type = allTypes[i];
-				if (string.IsNullOrEmpty(type.Namespace))
-					continue;
-				if (type.Namespace.Contains("MotionFramework"))
+				if (type.IsPublic)
 					result.Add(type);
 			}
 
