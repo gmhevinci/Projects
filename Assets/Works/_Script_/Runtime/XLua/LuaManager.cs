@@ -8,8 +8,9 @@ using MotionFramework;
 using MotionFramework.Console;
 using MotionFramework.Resource;
 using MotionFramework.Network;
+using MotionFramework.Utility;
 
-public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
+public class LuaManager : ModuleSingleton<LuaManager>, IModule
 {
 	[CSharpCallLua]
 	public delegate string LanguageDelegate(string key);
@@ -18,7 +19,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 	
 
 	private readonly LuaEnv _luaEnv = new LuaEnv();
-	private readonly TimerBase _tickTimer = new RepeatTimer(0, 1f);
+	private readonly RepeatTimer _tickTimer = new RepeatTimer(0, 1f);
 
 	private LuaTable _gameTable;
 	private Action _funStart;
@@ -27,10 +28,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 	private NetMessageDelegate _funNetMessage;
 
 
-	void IMotionModule.OnCreate(object createParam)
-	{
-	}
-	void IMotionModule.OnStart()
+	void IModule.OnCreate(object createParam)
 	{
 		_luaEnv.AddLoader(CustomLoaderMethod);
 		_luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
@@ -46,7 +44,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 		// 监听热更网络数据
 		NetworkManager.Instance.HotfixPackageCallback += OnHandleHotfixPackage;
 	}
-	void IMotionModule.OnUpdate()
+	void IModule.OnUpdate()
 	{
 		// Update
 		_funUpdate?.Invoke();
@@ -55,9 +53,9 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 		if (_tickTimer.Update(Time.unscaledDeltaTime))
 			_luaEnv.Tick();
 	}
-	void IMotionModule.OnGUI()
+	void IModule.OnGUI()
 	{
-		AppConsole.GUILable($"[{nameof(LuaManager)}] Lua memory : {_luaEnv.Memroy}Kb");
+		ConsoleGUI.Lable($"[{nameof(LuaManager)}] Lua memory : {_luaEnv.Memroy}Kb");
 	}
 
 	/// <summary>
@@ -75,7 +73,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 	/// </summary>
 	public void SendHotfixNetMessage(int msgID, byte[] bytes)
 	{
-		NetPackage package = new NetPackage();
+		NetworkPackage package = new NetworkPackage();
 		package.IsHotfixPackage = true;
 		package.MsgID = msgID;
 		package.BodyBytes = bytes;
@@ -106,7 +104,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName);
 		if(asset == null)
 		{
-			AppLog.Log(ELogType.Warning, $"Failed to load lua file : {resName}");
+			MotionLog.Log(ELogLevel.Warning, $"Failed to load lua file : {resName}");
 			return null;
 		}
 		return asset.bytes;
@@ -129,9 +127,9 @@ public class LuaManager : ModuleSingleton<LuaManager>, IMotionModule
 		}
 	}
 
-	private void OnHandleHotfixPackage(INetPackage pack)
+	private void OnHandleHotfixPackage(INetworkPackage pack)
 	{
-		NetPackage package = pack as NetPackage;
+		NetworkPackage package = pack as NetworkPackage;
 		_funNetMessage(package.MsgID, package.BodyBytes);
 	}
 }

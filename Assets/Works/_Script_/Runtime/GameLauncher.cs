@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MotionFramework;
@@ -14,32 +15,20 @@ using MotionFramework.Pool;
 
 public class GameLauncher : MonoBehaviour
 {
-	public static GameLauncher Instance = null;
-	private IMotionEngine _motionEngine;
-
-	[Tooltip("是否跳过CDN服务器")]
-	public bool SkipCDN = true;
-
-	[Tooltip("资源系统的加载模式")]
-	public EAssetSystemMode AssetSystemMode = EAssetSystemMode.ResourcesMode;
-
 	void Awake()
 	{
-		Instance = this;
-
 		// 不销毁游戏对象
 		DontDestroyOnLoad(gameObject);
 
 		// 注册日志系统
-		AppLog.RegisterCallback(HandleMotionFrameworkLog);
+		MotionLog.RegisterCallback(HandleMotionFrameworkLog);
 
 		// 初始化框架
-		_motionEngine = AppEngine.Instance;
-		_motionEngine.Initialize(this);
+		MotionEngine.Initialize(this);
 
 		// 初始化控制台
 		if (Application.isEditor || Debug.isDebugBuild)
-			AppConsole.Initialize();
+			DeveloperConsole.Initialize();
 
 		// 初始化应用
 		InitAppliaction();
@@ -50,12 +39,12 @@ public class GameLauncher : MonoBehaviour
 	}
 	void Update()
 	{
-		_motionEngine.OnUpdate();
+		MotionEngine.Update();
 	}
 	void OnGUI()
 	{
 		if (Application.isEditor || Debug.isDebugBuild)
-			AppConsole.DrawGUI();
+			DeveloperConsole.DrawGUI();
 	}
 
 	private void InitAppliaction()
@@ -73,55 +62,59 @@ public class GameLauncher : MonoBehaviour
 	/// <summary>
 	/// 监听框架日志
 	/// </summary>
-	private void HandleMotionFrameworkLog(ELogType logType, string log)
+	private void HandleMotionFrameworkLog(ELogLevel logLevel, string log)
 	{
-		if (logType == ELogType.Log)
+		if (logLevel == ELogLevel.Log)
 		{
 			UnityEngine.Debug.Log(log);
 		}
-		else if (logType == ELogType.Error)
+		else if (logLevel == ELogLevel.Error)
 		{
 			UnityEngine.Debug.LogError(log);
 		}
-		else if (logType == ELogType.Warning)
+		else if (logLevel == ELogLevel.Warning)
 		{
 			UnityEngine.Debug.LogWarning(log);
 		}
-		else if (logType == ELogType.Exception)
+		else if (logLevel == ELogLevel.Exception)
 		{
 			UnityEngine.Debug.LogError(log);
 		}
 		else
 		{
-			throw new NotImplementedException($"{logType}");
+			throw new NotImplementedException($"{logLevel}");
 		}
 	}
 
 	private void CreateGameModules()
 	{
 		// 创建事件管理器
-		AppEngine.Instance.CreateModule<EventManager>();
+		MotionEngine.CreateModule<EventManager>();
 
 		// 创建网络管理器
-		AppEngine.Instance.CreateModule<NetworkManager>();
+		var networkCreateParam = new NetworkManager.CreateParameters();
+		networkCreateParam.PackageCoderType = typeof(ProtoPackageCoder);
+		MotionEngine.CreateModule<NetworkManager>(networkCreateParam);
 
 		// 创建资源管理器
 		var resourceCreateParam = new ResourceManager.CreateParameters();
-		resourceCreateParam.AssetRootPath = GameDefine.AssetRootPath;
-		resourceCreateParam.AssetSystemMode = AssetSystemMode;
+		resourceCreateParam.LocationRoot = GameDefine.AssetRootPath;
+		resourceCreateParam.SimulationOnEditor = true;
 		resourceCreateParam.BundleServices = null;
-		AppEngine.Instance.CreateModule<ResourceManager>(resourceCreateParam);
+		resourceCreateParam.DecryptServices = null;
+		resourceCreateParam.AutoReleaseInterval = 10f;
+		MotionEngine.CreateModule<ResourceManager>(resourceCreateParam);
 
 		// 创建音频管理器
-		AppEngine.Instance.CreateModule<AudioManager>();
+		MotionEngine.CreateModule<AudioManager>();
 
 		// 创建场景管理器
-		AppEngine.Instance.CreateModule<SceneManager>();
+		MotionEngine.CreateModule<SceneManager>();
 
 		// 创建对象池管理器
-		AppEngine.Instance.CreateModule<PoolManager>();
+		MotionEngine.CreateModule<GameObjectPoolManager>();
 
 		// 直接进入游戏
-		AppEngine.Instance.CreateModule<LuaManager>();	
+		MotionEngine.CreateModule<LuaManager>();	
 	}
 }
