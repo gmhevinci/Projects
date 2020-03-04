@@ -73,7 +73,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	/// </summary>
 	public void SendHotfixNetMessage(int msgID, byte[] bytes)
 	{
-		NetworkPackage package = new NetworkPackage();
+		DefaultNetworkPackage package = new DefaultNetworkPackage();
 		package.IsHotfixPackage = true;
 		package.MsgID = msgID;
 		package.BodyBytes = bytes;
@@ -129,7 +129,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 
 	private void OnHandleHotfixPackage(INetworkPackage pack)
 	{
-		NetworkPackage package = pack as NetworkPackage;
+		DefaultNetworkPackage package = pack as DefaultNetworkPackage;
 		_funNetMessage(package.MsgID, package.BodyBytes);
 	}
 }
