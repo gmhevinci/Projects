@@ -9,6 +9,7 @@ using MotionFramework.Console;
 using MotionFramework.Resource;
 using MotionFramework.Network;
 using MotionFramework.Utility;
+using MotionFramework.Patch;
 
 public class LuaManager : ModuleSingleton<LuaManager>, IModule
 {
@@ -86,7 +87,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	private void InitLuaScript()
 	{
 		string resName = $"Lua/Game.lua";
-		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName);
+		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName, PatchDefine.AssetBundleDefaultVariant);
 		_gameTable = ExecuteScript(asset.bytes, "Game") as LuaTable;
 		_funStart = _gameTable.Get<Action>("Start");
 		_funUpdate = _gameTable.Get<Action>("Update");
@@ -101,7 +102,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	{
 		// 同步加载LUA文件
 		string resName = $"Lua/{fileName}.lua";
-		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName);
+		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName, PatchDefine.AssetBundleDefaultVariant);
 		if(asset == null)
 		{
 			MotionLog.Log(ELogLevel.Warning, $"Failed to load lua file : {resName}");

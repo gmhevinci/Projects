@@ -7,7 +7,14 @@ local Demo =
 
 local this = Demo
 
---普通日志--
+
+function Demo.Start()
+	print("Hello lua world")
+	local sphere = UE.GameObject.CreatePrimitive(UE.PrimitiveType.Sphere)
+	sphere.transform.localScale = UE.Vector3.one * 3
+end
+
+
 function Demo.Update()
 	if(UE.Input.GetKeyDown("space")) then
 		Debug.Log("Connect server")

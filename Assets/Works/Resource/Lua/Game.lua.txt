@@ -18,7 +18,7 @@ local Game = {}
 
 --Start--
 function Game.Start()
-	print("Hello lua world")
+	Demo.Start()
 end
 
 --Update--
