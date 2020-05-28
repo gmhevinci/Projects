@@ -105,7 +105,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName, PatchDefine.AssetBundleDefaultVariant);
 		if(asset == null)
 		{
-			MotionLog.Log(ELogLevel.Warning, $"Failed to load lua file : {resName}");
+			UnityEngine.Debug.LogWarning($"Failed to load lua file : {resName}");
 			return null;
 		}
 		return asset.bytes;
