@@ -9,6 +9,7 @@ MotionFramework.meta
 StreamingAssets/
 StreamingAssets.meta
 ILBinding/
+ILBinding.meta
 
 *.sln
 *.suo
