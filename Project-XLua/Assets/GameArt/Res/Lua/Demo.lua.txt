@@ -1,0 +1,49 @@
+
+--DEMO--
+local Demo = 
+{
+	IsSendLogin = false,
+}
+local this = Demo
+
+
+function Demo.Start()
+	print("Hello Lua World")
+
+	--加载资源
+	local ref = MF.Resource.AssetReference("Entity/Sphere")
+	local handle = ref:LoadAssetAsync(typeof(UE.GameObject))
+	handle:Completed("+", function(handle)
+		local go = handle.InstantiateObject
+		go.transform.position = UE.Vector3(0,0,0)
+		go.transform.localScale = UE.Vector3.one * 3
+	end)
+
+	--尝试连接ET服务器
+	local btn = UE.GameObject.Find("Button"):GetComponent("Button")
+	btn.onClick:AddListener(function() Demo.OnClickButton() end)
+end
+
+function Demo.Update()
+	if(MF.Network.NetworkManager.Instance.States == MF.Network.ENetworkStates.Connected) then
+		if(this.IsSendLogin == false) then
+			this.IsSendLogin = true
+			local msg = 
+			{
+				RpcId = 100,
+				Account = "hello",
+				Password = "1234",
+			}
+			NetSystem.SendMessage(ENetMessageID.C2R_Login, msg)
+		end
+	end
+end
+
+function Demo.OnClickButton(obj)
+	Debug.Log("Connect server")
+	if(MF.Network.NetworkManager.Instance.States == MF.Network.ENetworkStates.Disconnect) then
+		MF.Network.NetworkManager.Instance:ConnectServer("127.0.0.1", 10002)
+	end
+end
+
+return Demo

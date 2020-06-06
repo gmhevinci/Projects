@@ -3,14 +3,12 @@ obj/
 .vs/
 Library/
 Temp/
-BuildBundles/
 
-Assets/MotionFramework
-Assets/MotionFramework.meta
-Assets/StreamingAssets
-Assets/StreamingAssets.meta
-Assets/XLua
-Assets/XLua.meta
+MotionFramework/
+MotionFramework.meta
+StreamingAssets/
+StreamingAssets.meta
+ILBinding/
 
 *.sln
 *.suo
