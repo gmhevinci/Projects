@@ -3,6 +3,7 @@ obj/
 .vs/
 Library/
 Temp/
+BuildBundles/
 
 MotionFramework/
 MotionFramework.meta
