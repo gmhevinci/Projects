@@ -22,10 +22,10 @@ public class Demo : ModuleSingleton<Demo>, IModule
 	public void StartGame()
 	{
 		GameLogger.Log("Hello game world.");
-		MotionEngine.StartCoroutine(LoadAsset());	
+		MotionEngine.StartCoroutine(LoadAssets());
 	}
 
-	private IEnumerator LoadAsset()
+	private IEnumerator LoadAssets()
 	{
 		// 加载UI面板
 		GameLogger.Log("Load UICanvas.");
@@ -33,30 +33,43 @@ public class Demo : ModuleSingleton<Demo>, IModule
 		var canvasHandle = canvasRef.LoadAssetAsync<GameObject>();
 		yield return canvasHandle;
 
-		// 获取组件
+		// 实例化UI面板
 		GameObject uiRoot = canvasHandle.InstantiateObject;
-		Image img = uiRoot.transform.BFSearch("Image").GetComponent<Image>();
 
 		// 加载图集
-		GameLogger.Log("Load UIAtlas.");
-		AssetReference atlasRef = new AssetReference("UIAtlas/UIWordArt/UIWordArt", "CN");
-		var atlasHandle = atlasRef.LoadAssetAsync<SpriteAtlas>();
-		yield return atlasHandle;
+		{
+			GameLogger.Log("Load UIAtlas.");
+			AssetReference atlasRef = new AssetReference("UIAtlas/UIWordArt/UIWordArt", "CN");
+			var atlasHandle = atlasRef.LoadAssetAsync<SpriteAtlas>();
+			yield return atlasHandle;
 
-		// 设置精灵
-		SpriteAtlas atlas = atlasHandle.AssetObject as SpriteAtlas;
-		img.sprite = atlas.GetSprite("login_title");
-		img.SetNativeSize();
+			// 从图集里设置按钮精灵	
+			Image img = uiRoot.transform.BFSearch("Button").GetComponent<Image>();
+			SpriteAtlas spriteAtlas = atlasHandle.AssetObject as SpriteAtlas;
+			img.sprite = spriteAtlas.GetSprite("login_title");
+			img.SetNativeSize();
+		}
 
-		// 加载实体
-		GameLogger.Log("Load Cube.");
-		AssetReference entityRef = new AssetReference("Entity/Cube");
-		var entityHandle = entityRef.LoadAssetAsync<GameObject>();
-		yield return entityHandle;
+		// 加载资源包
+		{
+			GameLogger.Log("Load texture package");
+			AssetReference packRef = new AssetReference("UITexture/Foods");
+			var handle1 = packRef.LoadAssetAsync<Texture>("eggs");
+			yield return handle1;
+			var handle2 = packRef.LoadAssetAsync<Texture>("banana");
+			yield return handle2;
 
-		// 实例化实体
-		GameObject cube = entityHandle.InstantiateObject;
-		cube.transform.position = Vector3.zero;
-		cube.transform.localScale = Vector3.one * 5f;
+			// 设置纹理图片1
+			RawImage img1 = uiRoot.transform.BFSearch("Image1").GetComponent<RawImage>();
+			Texture tex1 = handle1.AssetObject as Texture;
+			img1.texture = tex1;
+			img1.SetNativeSize();
+
+			// 设置纹理图片2
+			RawImage img2 = uiRoot.transform.BFSearch("Image2").GetComponent<RawImage>();
+			Texture tex2 = handle2.AssetObject as Texture;
+			img2.texture = tex2;
+			img2.SetNativeSize();
+		}
 	}
 }

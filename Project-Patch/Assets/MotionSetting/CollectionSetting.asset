@@ -22,3 +22,6 @@ MonoBehaviour:
   - FolderPath: Assets/GameRes/UIAtlas/UIWordArt
     PackRule: 0
     LabelRule: 3
+  - FolderPath: Assets/GameRes/UITexture/Foods
+    PackRule: 0
+    LabelRule: 3
