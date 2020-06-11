@@ -94,7 +94,7 @@ public class GameLauncher : MonoBehaviour
 
 		// 创建资源管理器
 		var resourceCreateParam = new ResourceManager.CreateParameters();
-		resourceCreateParam.LocationRoot = "Assets/GameArt/Res";
+		resourceCreateParam.LocationRoot = GameDefine.AssetRootPath;
 		resourceCreateParam.SimulationOnEditor = SimulationOnEditor;
 		resourceCreateParam.BundleServices = new LocalBundleServices();
 		resourceCreateParam.DecryptServices = null;

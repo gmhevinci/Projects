@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CollectionSetting
   m_EditorClassIdentifier: 
   Elements:
-  - FolderPath: Assets/GameArt/Res
+  - FolderPath: Assets/GameRes
     PackRule: 0
     LabelRule: 1
