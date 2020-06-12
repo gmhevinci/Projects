@@ -28,24 +28,32 @@ public class Demo : ModuleSingleton<Demo>, IModule
 	private IEnumerator LoadAssets()
 	{
 		// 加载UI面板
-		GameLogger.Log("Load UICanvas.");
-		AssetReference canvasRef = new AssetReference("UIPanel/UICanvas");
-		var canvasHandle = canvasRef.LoadAssetAsync<GameObject>();
-		yield return canvasHandle;
+		GameLogger.Log("Load UIRoot.");
+		AssetReference rootRef = new AssetReference("UIPanel/UIRoot");
+		var rootHandle = rootRef.LoadAssetAsync<GameObject>();
+		yield return rootHandle;	
+		GameObject uiRoot = rootHandle.InstantiateObject; // 实例化对象
 
-		// 实例化UI面板
-		GameObject uiRoot = canvasHandle.InstantiateObject;
+		// 加载窗口
+		GameObject window;
+		{
+			AssetReference windowRef = new AssetReference("UIPanel/LoginWindow");
+			var handle = windowRef.LoadAssetAsync<GameObject>();
+			yield return handle;
+			window = handle.InstantiateObject; // 实例化对象
+			window.transform.SetParent(uiRoot.transform, false);
+		}
 
 		// 加载图集
 		{
 			GameLogger.Log("Load UIAtlas.");
-			AssetReference atlasRef = new AssetReference("UIAtlas/UIWordArt/UIWordArt", "CN");
-			var atlasHandle = atlasRef.LoadAssetAsync<SpriteAtlas>();
-			yield return atlasHandle;
+			AssetReference atlasRef = new AssetReference("UIAtlas/UIWordArt", "KR");
+			var handle = atlasRef.LoadAssetAsync<SpriteAtlas>();
+			yield return handle;
+			SpriteAtlas spriteAtlas = handle.AssetObject as SpriteAtlas;
 
-			// 从图集里设置按钮精灵	
-			Image img = uiRoot.transform.BFSearch("Button").GetComponent<Image>();
-			SpriteAtlas spriteAtlas = atlasHandle.AssetObject as SpriteAtlas;
+			// 设置精灵
+			Image img = window.transform.BFSearch("WordArt").GetComponent<Image>();
 			img.sprite = spriteAtlas.GetSprite("login_title");
 			img.SetNativeSize();
 		}
@@ -56,18 +64,19 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			AssetReference packRef = new AssetReference("UITexture/Foods");
 			var handle1 = packRef.LoadAssetAsync<Texture>("eggs");
 			yield return handle1;
-			var handle2 = packRef.LoadAssetAsync<Texture>("banana");
-			yield return handle2;
-
-			// 设置纹理图片1
-			RawImage img1 = uiRoot.transform.BFSearch("Image1").GetComponent<RawImage>();
 			Texture tex1 = handle1.AssetObject as Texture;
+
+			var handle2 = packRef.LoadAssetAsync<Texture>("apple");
+			yield return handle2;
+			Texture tex2 = handle2.AssetObject as Texture;
+
+			// 设置纹理1
+			RawImage img1 = window.transform.BFSearch("FoodImg1").GetComponent<RawImage>();	
 			img1.texture = tex1;
 			img1.SetNativeSize();
 
-			// 设置纹理图片2
-			RawImage img2 = uiRoot.transform.BFSearch("Image2").GetComponent<RawImage>();
-			Texture tex2 = handle2.AssetObject as Texture;
+			// 设置纹理2
+			RawImage img2 = window.transform.BFSearch("FoodImg2").GetComponent<RawImage>();
 			img2.texture = tex2;
 			img2.SetNativeSize();
 		}

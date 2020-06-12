@@ -25,3 +25,15 @@ MonoBehaviour:
   - FolderPath: Assets/GameRes/UITexture/Foods
     PackRule: 0
     LabelRule: 3
+  - FolderPath: Assets/GameRes/Entity/Entity.HD
+    PackRule: 0
+    LabelRule: 1
+  - FolderPath: Assets/GameRes/Entity/Entity.LD
+    PackRule: 0
+    LabelRule: 1
+  - FolderPath: Assets/GameArt/Entity/Monster.HD
+    PackRule: 0
+    LabelRule: 1
+  - FolderPath: Assets/GameArt/Entity/Monster.LD
+    PackRule: 0
+    LabelRule: 1

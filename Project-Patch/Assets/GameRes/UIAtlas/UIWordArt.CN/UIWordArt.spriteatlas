@@ -30,13 +30,15 @@ SpriteAtlas:
       enableTightPacking: 0
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: 4725939ceff6eaa4da313c3a530537a0, type: 3}
-    totalSpriteSurfaceArea: 83232
+    - {fileID: 102900000, guid: bf759bcff366010449b8022f76777490, type: 3}
+    totalSpriteSurfaceArea: 98304
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 4e50ed709767cdc418dc5089f7e8bf69, type: 3}
+  - {fileID: 21300000, guid: e328ebe774b3b2e419e3c1d84625d991, type: 3}
+  - {fileID: 21300000, guid: 53dd804dddd7bc54db91ec708ecf7ac0, type: 3}
   m_PackedSpriteNamesToIndex:
   - login_title
+  - game
   m_Tag: UIWordArt
   m_IsVariant: 0
