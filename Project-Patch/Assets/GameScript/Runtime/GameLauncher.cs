@@ -57,7 +57,7 @@ public class GameLauncher : MonoBehaviour
 	void Start()
 	{
 		// 创建游戏模块
-		MotionEngine.StartCoroutine(CreateGameModules());
+		StartCoroutine(CreateGameModules());
 	}
 	void Update()
 	{
@@ -135,11 +135,11 @@ public class GameLauncher : MonoBehaviour
 		}
 
 		// 资源服务接口
-		IBundleServices bundleServices;
+		IBundleServices bundleServices = null;
 		if (SkipCDN)
 		{
 			var localBundleServices = new LocalBundleServices(variantRules);
-			yield return localBundleServices.InitializeAsync();
+			yield return localBundleServices.InitializeAsync(SimulationOnEditor);
 			bundleServices = localBundleServices;
 		}
 		else
