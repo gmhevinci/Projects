@@ -27,10 +27,19 @@ public class GameLauncher : MonoBehaviour
 		KR,
 	}
 
+	/// <summary>
+	/// 在编辑器下模拟运行
+	/// </summary>
 	public bool SimulationOnEditor = false;
+
+	/// <summary>
+	/// 是否跳过CDN服务器
+	/// </summary>
 	public bool SkipCDN = false;
+
 	public EQuality Quality = EQuality.Default;
 	public ELanguage Language = ELanguage.Default;
+
 
 	void Awake()
 	{
@@ -125,6 +134,7 @@ public class GameLauncher : MonoBehaviour
 			variantRules.Add(rule2);
 		}
 
+		// 资源服务接口
 		IBundleServices bundleServices;
 		if (SkipCDN)
 		{
@@ -134,7 +144,6 @@ public class GameLauncher : MonoBehaviour
 		}
 		else
 		{
-			// 创建补丁管理器
 			string myWebServer = "127.0.0.1";
 			string myCDNServer = "127.0.0.1";
 
@@ -144,22 +153,20 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.DeviceID = 0;
 			patchCreateParam.TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0);
 			patchCreateParam.CheckLevel = ECheckLevel.CheckSize;
-
 			patchCreateParam.WebServers = new Dictionary<RuntimePlatform, string>();
 			patchCreateParam.WebServers.Add(RuntimePlatform.Android, $"{myWebServer}/WEB/Android/GameVersion.php");
 			patchCreateParam.WebServers.Add(RuntimePlatform.IPhonePlayer, $"{myWebServer}/WEB/Iphone/GameVersion.php");
-
 			patchCreateParam.CDNServers = new Dictionary<RuntimePlatform, string>();
 			patchCreateParam.CDNServers.Add(RuntimePlatform.Android, $"{myCDNServer}/CDN/Android");
 			patchCreateParam.CDNServers.Add(RuntimePlatform.IPhonePlayer, $"{myCDNServer}/CDN/Iphone");
-
 			patchCreateParam.DefaultWebServerIP = $"{myWebServer}/WEB/PC/GameVersion.php";
 			patchCreateParam.DefaultCDNServerIP = $"{myCDNServer}/CDN/PC";
-
 			patchCreateParam.VariantRules = variantRules;
 
-			MotionEngine.CreateModule<PatchManager>(patchCreateParam);
+			PatchManager patchManager = MotionEngine.CreateModule<PatchManager>(patchCreateParam);
+			yield return patchManager.InitializeAync();
 			bundleServices = MotionEngine.GetModule<PatchManager>();
+
 			EventManager.Instance.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEventMessage);
 			EventManager.Instance.AddListener<PatchEventMessageDefine.OperationEvent>(OnHandleEventMessage);
 		}
@@ -180,8 +187,13 @@ public class GameLauncher : MonoBehaviour
 		}
 		else
 		{
+			// 初始化补丁窗口
+			yield return PatchWindow.Instance.InitializeAsync();
+			WaitForSeconds waiting = new WaitForSeconds(1f);
+			yield return waiting;
+
 			// 开始补丁更新流程
-			PatchManager.Instance.Run();
+			PatchManager.Instance.Download();
 		}
 	}
 
@@ -193,12 +205,6 @@ public class GameLauncher : MonoBehaviour
 		if (msg is PatchEventMessageDefine.PatchStatesChange)
 		{
 			var message = msg as PatchEventMessageDefine.PatchStatesChange;
-
-			// 初始化结束
-			if (message.CurrentStates == EPatchStates.InitiationOver)
-			{
-				PatchWindow.Instance.Initialize();
-			}
 
 			// 补丁下载完毕
 			// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源，还有重新载入Unity清单。
@@ -218,6 +224,7 @@ public class GameLauncher : MonoBehaviour
 		}
 	}
 
+	// 开始游戏
 	private void StartGame()
 	{
 		MotionEngine.CreateModule<Demo>();

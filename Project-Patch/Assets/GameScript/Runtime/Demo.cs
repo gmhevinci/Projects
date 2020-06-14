@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.U2D;
 using MotionFramework;
 using MotionFramework.Resource;
+using MotionFramework.Patch;
 
 public class Demo : ModuleSingleton<Demo>, IModule
 {
@@ -42,6 +43,12 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			yield return handle;
 			window = handle.InstantiateObject; // 实例化对象
 			window.transform.SetParent(uiRoot.transform, false);
+
+			var versionTxt = window.transform.BFSearch("Version").GetComponent<Text>();
+			if (MotionEngine.Contains(typeof(PatchManager)))
+				versionTxt.text = PatchManager.Instance.GetGameVersion();
+			else
+				versionTxt.text = "NO Server";
 		}
 
 		// 加载资源包

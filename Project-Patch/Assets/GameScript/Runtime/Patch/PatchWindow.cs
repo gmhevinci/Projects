@@ -68,11 +68,41 @@ public class PatchWindow
 	private Text _tips;
 
 
-	public void Initialize()
+	/// <summary>
+	/// 异步初始化
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerator InitializeAsync()
 	{
+		// 下载面板
 		_assetRef = new AssetReference("UIPanel/PatchWindow");
-		_assetRef.LoadAssetAsync<GameObject>().Completed += Handle_Completed;
+		var handle = _assetRef.LoadAssetAsync<GameObject>();
+		yield return handle;
+
+		if(handle.AssetObject == null)
+			throw new Exception("PatchWindow load failed.");
+
+		_uiRoot = handle.InstantiateObject;
+		_manifest = _uiRoot.GetComponent<UIManifest>();
+		_slider = _manifest.GetUIComponent<Slider>("PatchWindow/UIWindow/Slider");
+		_tips = _manifest.GetUIComponent<Text>("PatchWindow/UIWindow/Slider/txt_tips");
+		_tips.text = "正在准备游戏世界......";
+		_messageBoxObj = _manifest.GetUIElement("PatchWindow/UIWindow/MessgeBox").gameObject;
+		_messageBoxObj.SetActive(false);
+
+		_eventGroup.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.FoundForceInstallAPP>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.FoundUpdateFiles>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.DownloadFilesProgress>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionRequestFailed>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.WebPatchManifestDownloadFailed>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.WebFileDownloadFailed>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.WebFileCheckFailed>(OnHandleEvent);
 	}
+
+	/// <summary>
+	/// 销毁
+	/// </summary>
 	public void Destroy()
 	{
 		_eventGroup.RemoveAllListener();
@@ -89,29 +119,6 @@ public class PatchWindow
 			_assetRef = null;
 		}
 	}
-	private void Handle_Completed(AssetOperationHandle obj)
-	{
-		if (obj.AssetObject == null)
-			return;
-
-		_uiRoot = obj.InstantiateObject;
-		_manifest = _uiRoot.GetComponent<UIManifest>();
-		_slider = _manifest.GetUIComponent<Slider>("PatchWindow/UIWindow/Slider");
-		_tips = _manifest.GetUIComponent<Text>("PatchWindow/UIWindow/Slider/txt_tips");
-		_messageBoxObj = _manifest.GetUIElement("PatchWindow/UIWindow/MessgeBox").gameObject;
-		_messageBoxObj.SetActive(false);
-
-		_eventGroup.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.FoundForceInstallAPP>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.FoundUpdateFiles>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.DownloadFilesProgress>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionRequestFailed>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.WebPatchManifestDownloadFailed>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.WebFileDownloadFailed>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.WebFileCheckFailed>(OnHandleEvent);
-
-		SendOperationEvent(EPatchOperation.BeginingRequestGameVersion);
-	}
 
 	/// <summary>
 	/// 接收事件
@@ -120,10 +127,8 @@ public class PatchWindow
 	{
 		if (msg is PatchEventMessageDefine.PatchStatesChange)
 		{
-			var message = msg as PatchEventMessageDefine.PatchStatesChange;
-			if (message.CurrentStates == EPatchStates.None)
-				_tips.text = "正在准备游戏世界......";
-			else if (message.CurrentStates == EPatchStates.RequestGameVersion)
+			var message = msg as PatchEventMessageDefine.PatchStatesChange;		
+			if (message.CurrentStates == EPatchStates.RequestGameVersion)
 				_tips.text = "正在请求最新游戏版本";
 			else if (message.CurrentStates == EPatchStates.ParseWebPatchManifest)
 				_tips.text = "正在分析新清单";
