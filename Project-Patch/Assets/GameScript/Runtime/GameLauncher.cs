@@ -15,8 +15,22 @@ using MotionFramework.Pool;
 
 public class GameLauncher : MonoBehaviour
 {
+	public enum EQuality
+	{
+		Default,
+		HD,
+	}
+	public enum ELanguage
+	{
+		Default,
+		EN,
+		KR,
+	}
+
 	public bool SimulationOnEditor = false;
 	public bool SkipCDN = false;
+	public EQuality Quality = EQuality.Default;
+	public ELanguage Language = ELanguage.Default;
 
 	void Awake()
 	{
@@ -34,7 +48,7 @@ public class GameLauncher : MonoBehaviour
 	void Start()
 	{
 		// 创建游戏模块
-		CreateGameModules();
+		MotionEngine.StartCoroutine(CreateGameModules());
 	}
 	void Update()
 	{
@@ -92,19 +106,31 @@ public class GameLauncher : MonoBehaviour
 	/// <summary>
 	/// 创建游戏模块
 	/// </summary>
-	private void CreateGameModules()
+	private IEnumerator CreateGameModules()
 	{
 		// 创建事件管理器
 		MotionEngine.CreateModule<EventManager>();
-	
+
+		// 创建变体规则集合
+		var variantRules = new List<VariantRule>();
+		{
+			var rule1 = new VariantRule();
+			rule1.VariantGroup = new List<string>() { "EN", "KR" };
+			rule1.TargetVariant = Language == ELanguage.Default ? VariantRule.DefaultTag : Language.ToString();
+			variantRules.Add(rule1);
+
+			var rule2 = new VariantRule();
+			rule2.VariantGroup = new List<string>() { "HD" };
+			rule2.TargetVariant = Quality == EQuality.Default ? VariantRule.DefaultTag : Quality.ToString();
+			variantRules.Add(rule2);
+		}
+
 		IBundleServices bundleServices;
 		if (SkipCDN)
 		{
-			var variantRule1 = new VariantRule();
-			variantRule1.VariantGroup = new List<string>() { "CN", "EN", "KR" };
-			variantRule1.TargetVariant = "EN";
-			var variantRules = new List<VariantRule>() { variantRule1 };
-			bundleServices = new LocalBundleServices(variantRules);
+			var localBundleServices = new LocalBundleServices(variantRules);
+			yield return localBundleServices.InitializeAsync();
+			bundleServices = localBundleServices;
 		}
 		else
 		{
@@ -130,10 +156,7 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.DefaultWebServerIP = $"{myWebServer}/WEB/PC/GameVersion.php";
 			patchCreateParam.DefaultCDNServerIP = $"{myCDNServer}/CDN/PC";
 
-			var variantRule1 = new VariantRule();
-			variantRule1.VariantGroup = new List<string>() { "CN", "EN", "KR" };
-			variantRule1.TargetVariant = "EN";
-			patchCreateParam.VariantRules = new List<VariantRule>() { variantRule1 };
+			patchCreateParam.VariantRules = variantRules;
 
 			MotionEngine.CreateModule<PatchManager>(patchCreateParam);
 			bundleServices = MotionEngine.GetModule<PatchManager>();

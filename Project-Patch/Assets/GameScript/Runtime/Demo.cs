@@ -44,20 +44,6 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			window.transform.SetParent(uiRoot.transform, false);
 		}
 
-		// 加载图集
-		{
-			GameLogger.Log("Load UIAtlas.");
-			AssetReference atlasRef = new AssetReference("UIAtlas/UIWordArt", "KR");
-			var handle = atlasRef.LoadAssetAsync<SpriteAtlas>();
-			yield return handle;
-			SpriteAtlas spriteAtlas = handle.AssetObject as SpriteAtlas;
-
-			// 设置精灵
-			Image img = window.transform.BFSearch("WordArt").GetComponent<Image>();
-			img.sprite = spriteAtlas.GetSprite("login_title");
-			img.SetNativeSize();
-		}
-
 		// 加载资源包
 		{
 			GameLogger.Log("Load texture package");
@@ -79,6 +65,16 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			RawImage img2 = window.transform.BFSearch("FoodImg2").GetComponent<RawImage>();
 			img2.texture = tex2;
 			img2.SetNativeSize();
+		}
+
+		// 加载模型
+		{
+			AssetReference entityRef = new AssetReference("Entity/Monster/Boss");
+			var handle = entityRef.LoadAssetAsync<GameObject>();
+			yield return handle;
+			var sphere = handle.InstantiateObject; // 实例化对象
+			sphere.transform.position = new Vector3(5f, 0, 0);
+			sphere.transform.localScale = sphere.transform.localScale * 2f;
 		}
 	}
 }

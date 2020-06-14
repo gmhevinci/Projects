@@ -16,24 +16,9 @@ MonoBehaviour:
   - FolderPath: Assets/GameRes
     PackRule: 0
     LabelRule: 1
-  - FolderPath: Assets/GameArt/Panel/Sprite
-    PackRule: 0
-    LabelRule: 3
-  - FolderPath: Assets/GameRes/UIAtlas/UIWordArt
-    PackRule: 0
-    LabelRule: 3
   - FolderPath: Assets/GameRes/UITexture/Foods
     PackRule: 0
-    LabelRule: 3
-  - FolderPath: Assets/GameRes/Entity/Entity.HD
+    LabelRule: 2
+  - FolderPath: Assets/GameArt/Panel/Sprite
     PackRule: 0
-    LabelRule: 1
-  - FolderPath: Assets/GameRes/Entity/Entity.LD
-    PackRule: 0
-    LabelRule: 1
-  - FolderPath: Assets/GameArt/Entity/Monster.HD
-    PackRule: 0
-    LabelRule: 1
-  - FolderPath: Assets/GameArt/Entity/Monster.LD
-    PackRule: 0
-    LabelRule: 1
+    LabelRule: 2
