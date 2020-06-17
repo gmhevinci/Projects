@@ -20,12 +20,15 @@ public class GameLauncher : MonoBehaviour
 
 	void Awake()
 	{
-		// 初始化框架
-		bool showConsole = Application.isEditor || Debug.isDebugBuild;
-		MotionEngine.Initialize(this, showConsole, HandleMotionFrameworkLog);
-
 		// 初始化应用
 		InitAppliaction();
+
+		// 初始化控制台
+		if (Application.isEditor || Debug.isDebugBuild)
+			DeveloperConsole.Initialize();
+
+		// 初始化框架
+		MotionEngine.Initialize(this, HandleMotionFrameworkLog);
 	}
 	void Start()
 	{
@@ -40,7 +43,8 @@ public class GameLauncher : MonoBehaviour
 	void OnGUI()
 	{
 		// 绘制控制台
-		MotionEngine.DrawConsole();
+		if (Application.isEditor || Debug.isDebugBuild)
+			DeveloperConsole.Draw();
 	}
 
 	private void InitAppliaction()
