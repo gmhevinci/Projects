@@ -1166,7 +1166,7 @@ GameObject:
   - component: {fileID: 7065406879249176620}
   - component: {fileID: 8606153857348655283}
   - component: {fileID: 8460747169798259904}
-  - component: {fileID: 3402437799543765593}
+  - component: {fileID: 5969902244594898128}
   m_Layer: 0
   m_Name: PatchWindow
   m_TagString: Untagged
@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3402437799543765593
+--- !u!114 &5969902244594898128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1265,10 +1265,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9202222789747178935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c640ed9d5476f3d48915ec07f6be186a, type: 3}
+  m_Script: {fileID: 11500000, guid: 78f8c51d1eac4a548a5306a755aac78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _elementPath:
+  CacheAtlasTags: []
+  ElementPath:
   - PatchWindow
   - PatchWindow/EventSystem
   - PatchWindow/UICamera
@@ -1285,7 +1286,7 @@ MonoBehaviour:
   - PatchWindow/UIWindow/MessgeBox/txt_content
   - PatchWindow/UIWindow/MessgeBox/btn_yes
   - PatchWindow/UIWindow/MessgeBox/btn_yes/Text
-  _elementTrans:
+  ElementTrans:
   - {fileID: 9167895381957558164}
   - {fileID: 8843699389177310126}
   - {fileID: 7266466292851966540}
@@ -1302,5 +1303,3 @@ MonoBehaviour:
   - {fileID: 3362714082601923633}
   - {fileID: 6078283948824305274}
   - {fileID: 6700777545668007006}
-  _cacheAtlasTags: []
-  AttachPrefabs: []

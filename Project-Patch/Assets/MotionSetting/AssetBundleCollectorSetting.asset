@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cc54f0173b27fb40aee29e7eb3364da, type: 3}
-  m_Name: CollectionSetting
+  m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   Elements:
   - FolderPath: Assets/GameRes

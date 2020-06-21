@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8246451440243464219}
   - component: {fileID: 3329585611276934654}
   - component: {fileID: 135085244592460784}
-  - component: {fileID: 6241834061337234581}
+  - component: {fileID: 1320951730663303294}
   m_Layer: 5
   m_Name: LoginWindow
   m_TagString: Untagged
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6241834061337234581
+--- !u!114 &1320951730663303294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,10 +90,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1112965290395126675}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c640ed9d5476f3d48915ec07f6be186a, type: 3}
+  m_Script: {fileID: 11500000, guid: 78f8c51d1eac4a548a5306a755aac78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _elementPath:
+  CacheAtlasTags:
+  - UICommon
+  - UIWordArt
+  ElementPath:
   - LoginWindow
   - LoginWindow/Button
   - LoginWindow/Button/WordArt
@@ -102,7 +105,7 @@ MonoBehaviour:
   - LoginWindow/FoodImg2
   - LoginWindow/VersionBg
   - LoginWindow/VersionBg/Version
-  _elementTrans:
+  ElementTrans:
   - {fileID: 8246451440243464219}
   - {fileID: 4444674724428216138}
   - {fileID: 3952056817075728389}
@@ -111,10 +114,6 @@ MonoBehaviour:
   - {fileID: 1690007742078330964}
   - {fileID: 5136380757026385301}
   - {fileID: 5865357733367222762}
-  _cacheAtlasTags:
-  - UICommon
-  - UIWordArt
-  AttachPrefabs: []
 --- !u!1 &1125144786428585896
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +125,7 @@ GameObject:
   - component: {fileID: 1212325320699366011}
   - component: {fileID: 6417304415706688755}
   - component: {fileID: 3007871405784342725}
-  - component: {fileID: 8876181344329187628}
+  - component: {fileID: 3830844448545648304}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -190,7 +189,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8876181344329187628
+--- !u!114 &3830844448545648304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,7 +198,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1125144786428585896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a50917104f7813c4f81d21870014b132, type: 3}
+  m_Script: {fileID: 11500000, guid: 4de1996ed12b0cf4e8ca0be3bbf410bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Atlas: {fileID: 4343727234628468602, guid: 900eed85748626f4e81b068deb06435e, type: 2}
@@ -356,7 +355,7 @@ GameObject:
   - component: {fileID: 3952056817075728389}
   - component: {fileID: 2198084648952010748}
   - component: {fileID: 7897501503097176040}
-  - component: {fileID: 3385643737167852254}
+  - component: {fileID: 5105743182786044578}
   m_Layer: 5
   m_Name: WordArt
   m_TagString: Untagged
@@ -420,7 +419,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3385643737167852254
+--- !u!114 &5105743182786044578
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,7 +428,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4730141811841179715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a50917104f7813c4f81d21870014b132, type: 3}
+  m_Script: {fileID: 11500000, guid: 4de1996ed12b0cf4e8ca0be3bbf410bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Atlas: {fileID: 4343727234628468602, guid: 900eed85748626f4e81b068deb06435e, type: 2}
@@ -598,7 +597,7 @@ GameObject:
   - component: {fileID: 4097217131078400949}
   - component: {fileID: 1816085156470799000}
   - component: {fileID: 3468340031539203651}
-  - component: {fileID: 7263814199472013984}
+  - component: {fileID: 816648087921426073}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -706,7 +705,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7263814199472013984
+--- !u!114 &816648087921426073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -715,7 +714,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8423133261103193693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a50917104f7813c4f81d21870014b132, type: 3}
+  m_Script: {fileID: 11500000, guid: 4de1996ed12b0cf4e8ca0be3bbf410bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Atlas: {fileID: 4343727234628468602, guid: 9383e90d8fd76f241af15da9d73d2e55, type: 2}
