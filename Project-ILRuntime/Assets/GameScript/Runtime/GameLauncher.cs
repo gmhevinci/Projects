@@ -12,6 +12,7 @@ using MotionFramework.Network;
 using MotionFramework.Patch;
 using MotionFramework.Scene;
 using MotionFramework.Pool;
+using MotionFramework.Window;
 
 public class GameLauncher : MonoBehaviour
 {
@@ -123,14 +124,17 @@ public class GameLauncher : MonoBehaviour
 		resourceCreateParam.AutoReleaseInterval = 10f;
 		MotionEngine.CreateModule<ResourceManager>(resourceCreateParam);
 
+		// 创建配表管理器
+		MotionEngine.CreateModule<ConfigManager>();
+
 		// 创建音频管理器
 		MotionEngine.CreateModule<AudioManager>();
 
 		// 创建场景管理器
 		MotionEngine.CreateModule<SceneManager>();
 
-		// 创建对象池管理器
-		MotionEngine.CreateModule<GameObjectPoolManager>();
+		// 创建窗口管理器
+		MotionEngine.CreateModule<WindowManager>();
 
 		// 创建ILR管理器
 		ILRManager.CreateParameters createParameters = new ILRManager.CreateParameters();

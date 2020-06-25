@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 namespace Hotfix
 {
 	public static class Main
@@ -7,12 +6,10 @@ namespace Hotfix
 		public static void Start()
 		{
 			HotfixLogger.Log("Hello ILRuntime World");
-			HotfixNetManager.Instance.Start();
 			Demo.Instance.Start();
 		}
 		public static void Update()
 		{
-			HotfixNetManager.Instance.Update();
 			Demo.Instance.Update();
 		}
 		public static void LateUpdate()

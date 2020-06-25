@@ -14,37 +14,37 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityEngine_Events_UnityEvent_Binding
+    unsafe class MotionFramework_Config_ConfigTable_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(UnityEngine.Events.UnityEvent);
-            args = new Type[]{typeof(UnityEngine.Events.UnityAction)};
-            method = type.GetMethod("AddListener", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, AddListener_0);
+            Type type = typeof(MotionFramework.Config.ConfigTable);
+            args = new Type[]{typeof(MotionFramework.IO.ByteBuffer)};
+            method = type.GetMethod("ReadByte", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, ReadByte_0);
 
 
         }
 
 
-        static StackObject* AddListener_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ReadByte_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Events.UnityAction @call = (UnityEngine.Events.UnityAction)typeof(UnityEngine.Events.UnityAction).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            MotionFramework.IO.ByteBuffer @byteBuf = (MotionFramework.IO.ByteBuffer)typeof(MotionFramework.IO.ByteBuffer).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Events.UnityEvent instance_of_this_method = (UnityEngine.Events.UnityEvent)typeof(UnityEngine.Events.UnityEvent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            MotionFramework.Config.ConfigTable instance_of_this_method = (MotionFramework.Config.ConfigTable)typeof(MotionFramework.Config.ConfigTable).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.AddListener(@call);
+            instance_of_this_method.ReadByte(@byteBuf);
 
             return __ret;
         }

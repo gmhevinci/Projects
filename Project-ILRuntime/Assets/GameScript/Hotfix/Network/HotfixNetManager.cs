@@ -15,7 +15,7 @@ namespace Hotfix
 		private readonly DoubleMap<int, Type> _types = new DoubleMap<int, Type>();
 
 
-		public void Start()
+		public void Create()
 		{
 			// 收集所有网络协议的类型
 			CollectTypes();

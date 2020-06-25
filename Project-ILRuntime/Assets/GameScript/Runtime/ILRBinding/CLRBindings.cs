@@ -16,17 +16,23 @@ namespace ILRuntime.Runtime.Generated
         /// </summary>
         public static void Initialize(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
-            UnityEngine_GameObject_Binding.Register(app);
-            UnityEngine_UI_Button_Binding.Register(app);
-            UnityEngine_Events_UnityEvent_Binding.Register(app);
+            MotionFramework_IO_ByteBuffer_Binding.Register(app);
+            MotionFramework_Config_ConfigTable_Binding.Register(app);
+            MotionFramework_MotionEngine_Binding.Register(app);
+            MotionFramework_ModuleSingleton_1_WindowManager_Binding.Register(app);
+            MotionFramework_Window_WindowManager_Binding.Register(app);
             MotionFramework_Resource_AssetReference_Binding.Register(app);
             MotionFramework_Resource_AssetOperationHandle_Binding.Register(app);
-            MotionFramework_ModuleSingleton_1_NetworkManager_Binding.Register(app);
-            MotionFramework_Network_NetworkManager_Binding.Register(app);
+            UnityEngine_GameObject_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
-            MotionFramework_AI_FiniteStateMachine_Binding.Register(app);
+            UnityEngine_Object_Binding.Register(app);
             System_String_Binding.Register(app);
+            MotionFramework_ModuleSingleton_1_ConfigManager_Binding.Register(app);
+            MotionFramework_Config_ConfigManager_Binding.Register(app);
+            MotionFramework_Config_AssetConfig_Binding.Register(app);
+            System_NotSupportedException_Binding.Register(app);
+            MotionFramework_AI_FiniteStateMachine_Binding.Register(app);
             UnityEngine_Debug_Binding.Register(app);
             System_Type_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
@@ -37,6 +43,8 @@ namespace ILRuntime.Runtime.Generated
             Google_Protobuf_ProtoPreconditions_Binding.Register(app);
             Google_Protobuf_CodedOutputStream_Binding.Register(app);
             Google_Protobuf_CodedInputStream_Binding.Register(app);
+            MotionFramework_ModuleSingleton_1_NetworkManager_Binding.Register(app);
+            MotionFramework_Network_NetworkManager_Binding.Register(app);
             MotionFramework_Network_DefaultNetworkPackage_Binding.Register(app);
             DoubleMap_2_Int32_Type_Binding.Register(app);
             System_Activator_Binding.Register(app);
@@ -45,6 +53,8 @@ namespace ILRuntime.Runtime.Generated
             System_Attribute_Binding.Register(app);
             MotionFramework_Network_NetworkMessageAttribute_Binding.Register(app);
             System_Exception_Binding.Register(app);
+            MotionFramework_ModuleSingleton_1_EventManager_Binding.Register(app);
+            MotionFramework_Event_EventManager_Binding.Register(app);
 
             ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
             __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector2));

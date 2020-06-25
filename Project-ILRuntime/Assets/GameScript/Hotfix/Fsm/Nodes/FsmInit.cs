@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using MotionFramework;
 using MotionFramework.AI;
 
 namespace Hotfix
@@ -18,7 +20,6 @@ namespace Hotfix
 		public void OnExit()
 		{
 		}
-
 		public void OnHandleMessage(object msg)
 		{
 		}

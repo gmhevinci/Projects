@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using MotionFramework;
 using MotionFramework.Resource;
-using MotionFramework.Network;
-using MotionFramework.Event;
+using MotionFramework.Config;
+using MotionFramework.Window;
 
 namespace Hotfix
 {
@@ -14,60 +14,50 @@ namespace Hotfix
 
 		public void Start()
 		{
-			// UGUI相关
-			var btn = GameObject.Find("Button").GetComponent<Button>();
-			btn.onClick.AddListener(OnClickButton);
-
-			// 监听事件
-			EventManager.Instance.AddListener<NetworkEventMessageDefine.ConnectFail>(OnHandleEventMessage);
-			EventManager.Instance.AddListener<NetworkEventMessageDefine.ConnectSuccess>(OnHandleEventMessage);
-
-			// 创建状态机
+			HotfixNetManager.Instance.Create();
 			FsmManager.Instance.Create();
 
-			// 加载资源
+			// 开启协程加载资源
+			MotionEngine.StartCoroutine(LoadAssets());
+		}
+
+		public IEnumerator LoadAssets()
+		{
+			// 加载UIRoot
+			var uiRoot = WindowManager.Instance.CreateUIRoot<CanvasRoot>("UIPanel/UIRoot");
+			yield return uiRoot;
+
+			// 加载窗口
+			HotfixLogger.Log("开始加载窗口");
+			UITools.PreLoadWindow("Hotfix.UILogin", "UIPanel/LoginWindow");
+			//UILogin login = new UILogin();
+			//WindowManager.Instance.PreloadWindow(login, "UIPanel/LoginWindow");
+
+			// 加载模型
+			HotfixLogger.Log("开始加载模型");
 			AssetReference assetRef = new AssetReference("Entity/Sphere");
 			var handle = assetRef.LoadAssetAsync<GameObject>();
-			handle.Completed += Handle_Completed;
-		}
-		public void Update()
-		{
-			// 更新状态机
-			FsmManager.Instance.Update();
-		}
+			yield return handle;
 
-		private void OnClickButton()
-		{
-			// 尝试连接ET服务器
-			NetworkManager.Instance.ConnectServer("127.0.0.1", 10002);
-		}
-
-		private void Handle_Completed(AssetOperationHandle obj)
-		{
-			var sphere = obj.InstantiateObject;
+			var sphere = handle.InstantiateObject;
 			sphere.transform.position = Vector3.zero;
 			sphere.transform.localScale = Vector3.one * 3f;
+			HotfixLogger.Log($"模型名字：{sphere.name}");
+
+			// 加载配表
+			HotfixLogger.Log("开始加载配表");
+			CfgAvatar cfgInstance = new CfgAvatar();
+			yield return ConfigManager.Instance.LoadConfig(cfgInstance, "Config/Avatar");
+
+			CfgAvatarTable table = cfgInstance.GetTable(1001) as CfgAvatarTable;
+			HotfixLogger.Log($"表格数据：{table.HeadIcon}");
+			HotfixLogger.Log($"表格数据：{table.Model}");
 		}
 
-		private void OnHandleEventMessage(IEventMessage msg)
+		public void Update()
 		{
-			if(msg is NetworkEventMessageDefine.ConnectFail)
-			{
-				HotfixLogger.Log("连接服务器失败");
-			}
-			else if(msg is NetworkEventMessageDefine.ConnectSuccess)
-			{
-				HotfixLogger.Log("连接服务器成功");
-
-				// 发送登录消息
-				C2R_Login loginMsg = new C2R_Login
-				{
-					RpcId = 100,
-					Account = "hello",
-					Password = "1234"
-				};
-				HotfixNetManager.Instance.SendHotfixMsg(loginMsg);
-			}
+			HotfixNetManager.Instance.Update();
+			FsmManager.Instance.Update();
 		}
 	}
 }

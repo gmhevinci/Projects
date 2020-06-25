@@ -3,15 +3,15 @@ using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Intepreter;
 
-namespace Google.Protobuf
+namespace MotionFramework.Config
 {
-	public class IMessageAdapter : CrossBindingAdaptor
+	public class ConfigTableAdapter : CrossBindingAdaptor
 	{
 		public override Type BaseCLRType
 		{
 			get
 			{
-				return typeof(Google.Protobuf.IMessage);
+				return typeof(MotionFramework.Config.ConfigTable);
 			}
 		}
 
@@ -28,14 +28,12 @@ namespace Google.Protobuf
 			return new Adapter(appdomain, instance);
 		}
 
-		public class Adapter : Google.Protobuf.IMessage, CrossBindingAdaptorType
+		public class Adapter : MotionFramework.Config.ConfigTable, CrossBindingAdaptorType
 		{
 			ILTypeInstance instance;
 			ILRuntime.Runtime.Enviorment.AppDomain appdomain;
 
-			CrossBindingMethodInfo<Google.Protobuf.CodedInputStream> mMergeFrom_0 = new CrossBindingMethodInfo<Google.Protobuf.CodedInputStream>("MergeFrom");
-			CrossBindingMethodInfo<Google.Protobuf.CodedOutputStream> mWriteTo_1 = new CrossBindingMethodInfo<Google.Protobuf.CodedOutputStream>("WriteTo");
-			CrossBindingFunctionInfo<System.Int32> mCalculateSize_2 = new CrossBindingFunctionInfo<System.Int32>("CalculateSize");
+			CrossBindingMethodInfo<MotionFramework.IO.ByteBuffer> mReadByte_0 = new CrossBindingMethodInfo<MotionFramework.IO.ByteBuffer>("ReadByte");
 
 			public Adapter()
 			{
@@ -50,19 +48,9 @@ namespace Google.Protobuf
 
 			public ILTypeInstance ILInstance { get { return instance; } }
 
-			public void MergeFrom(Google.Protobuf.CodedInputStream input)
+			public override void ReadByte(MotionFramework.IO.ByteBuffer byteBuf)
 			{
-				mMergeFrom_0.Invoke(this.instance, input);
-			}
-
-			public void WriteTo(Google.Protobuf.CodedOutputStream output)
-			{
-				mWriteTo_1.Invoke(this.instance, output);
-			}
-
-			public System.Int32 CalculateSize()
-			{
-				return mCalculateSize_2.Invoke(this.instance);
+				mReadByte_0.Invoke(this.instance, byteBuf);
 			}
 
 			public override string ToString()

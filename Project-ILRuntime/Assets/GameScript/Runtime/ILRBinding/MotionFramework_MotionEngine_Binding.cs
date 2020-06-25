@@ -14,33 +14,34 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityEngine_GameObject_Binding
+    unsafe class MotionFramework_MotionEngine_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(UnityEngine.GameObject);
-            args = new Type[]{};
-            method = type.GetMethod("get_transform", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_transform_0);
+            Type type = typeof(MotionFramework.MotionEngine);
+            args = new Type[]{typeof(System.Collections.IEnumerator)};
+            method = type.GetMethod("StartCoroutine", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, StartCoroutine_0);
 
 
         }
 
 
-        static StackObject* get_transform_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* StartCoroutine_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.GameObject instance_of_this_method = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.IEnumerator @coroutine = (System.Collections.IEnumerator)typeof(System.Collections.IEnumerator).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.transform;
+
+            var result_of_this_method = MotionFramework.MotionEngine.StartCoroutine(@coroutine);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

@@ -34,5 +34,5 @@ public class ILRDefine
 	/// <summary>
 	/// 我们设定的自动生成的适配脚本夹路径
 	/// </summary>
-	public const string StrMyAdapterFolderPath = "Assets/GameScript/Runtime/ILRAdapter";
+	public const string StrMyAdapterFolderPath = "Assets/GameScript/Runtime/Temper";
 }

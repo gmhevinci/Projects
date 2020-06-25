@@ -23,15 +23,15 @@ namespace ILRuntime.Runtime.Generated
             FieldInfo field;
             Type[] args;
             Type type = typeof(MotionFramework.Network.NetworkManager);
-            args = new Type[]{};
-            method = type.GetMethod("get_States", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_States_0);
-            args = new Type[]{typeof(System.String), typeof(System.Int32)};
-            method = type.GetMethod("ConnectServer", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, ConnectServer_1);
             args = new Type[]{typeof(MotionFramework.Network.INetworkPackage)};
             method = type.GetMethod("SendMessage", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SendMessage_2);
+            app.RegisterCLRMethodRedirection(method, SendMessage_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_States", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_States_1);
+            args = new Type[]{typeof(System.String), typeof(System.Int32)};
+            method = type.GetMethod("ConnectServer", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, ConnectServer_2);
 
             field = type.GetField("HotfixPackageCallback", flag);
             app.RegisterCLRFieldGetter(field, get_HotfixPackageCallback_0);
@@ -42,7 +42,26 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* get_States_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SendMessage_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            MotionFramework.Network.INetworkPackage @package = (MotionFramework.Network.INetworkPackage)typeof(MotionFramework.Network.INetworkPackage).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            MotionFramework.Network.NetworkManager instance_of_this_method = (MotionFramework.Network.NetworkManager)typeof(MotionFramework.Network.NetworkManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.SendMessage(@package);
+
+            return __ret;
+        }
+
+        static StackObject* get_States_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -57,7 +76,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* ConnectServer_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ConnectServer_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -75,25 +94,6 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ConnectServer(@host, @port);
-
-            return __ret;
-        }
-
-        static StackObject* SendMessage_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            MotionFramework.Network.INetworkPackage @package = (MotionFramework.Network.INetworkPackage)typeof(MotionFramework.Network.INetworkPackage).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            MotionFramework.Network.NetworkManager instance_of_this_method = (MotionFramework.Network.NetworkManager)typeof(MotionFramework.Network.NetworkManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.SendMessage(@package);
 
             return __ret;
         }

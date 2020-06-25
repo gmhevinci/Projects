@@ -37,6 +37,14 @@ public static class ILRuntimeCLRBinding
 	[MenuItem("Tools/ILRuntime/Generate CLR Adapter Code")]
 	static void GenerateCLRBindingAdapterCode()
 	{
+		// 先删除旧代码
+		AssetDatabase.DeleteAsset(ILRDefine.StrMyAdapterFolderPath);
+		Directory.CreateDirectory(ILRDefine.StrMyAdapterFolderPath);
+
+		CreateBindingAdapterFile(typeof(CanvasWindow));
+		CreateBindingAdapterFile(typeof(MotionFramework.Config.ConfigTable));
+		CreateBindingAdapterFile(typeof(MotionFramework.Config.AssetConfig));
+		CreateBindingAdapterFile(typeof(MotionFramework.Event.IEventMessage));
 		CreateBindingAdapterFile(typeof(MotionFramework.AI.IFsmNode));
 		CreateBindingAdapterFile(typeof(Google.Protobuf.IMessage));
 

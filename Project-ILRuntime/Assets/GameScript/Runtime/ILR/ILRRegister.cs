@@ -17,6 +17,7 @@ public static class ILRRegister
 		appdomain.DelegateManager.RegisterMethodDelegate<MotionFramework.Event.IEventMessage>();
 		appdomain.DelegateManager.RegisterMethodDelegate<MotionFramework.Resource.AssetOperationHandle>();
 		appdomain.DelegateManager.RegisterMethodDelegate<MotionFramework.Resource.SceneInstance>();
+		appdomain.DelegateManager.RegisterMethodDelegate<MotionFramework.Config.AssetConfig>();
 		appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.GameObject>();
 
 		// 注册委托转换器
@@ -48,11 +49,14 @@ public static class ILRRegister
 		appdomain.RegisterValueTypeBinder(typeof(UnityEngine.Quaternion), new QuaternionBinder());
 
 		// 注册适配器
-		var fsmNodeAdaptor = new MotionFramework.AI.IFsmNodeAdapter();
-		var messageAdaptor = new Google.Protobuf.IMessageAdapter();
-		appdomain.RegisterCrossBindingAdaptor(fsmNodeAdaptor);
-		appdomain.RegisterCrossBindingAdaptor(messageAdaptor);
-
+		appdomain.RegisterCrossBindingAdaptor(new CoroutineAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new CanvasWindowAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new Google.Protobuf.IMessageAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new MotionFramework.AI.IFsmNodeAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new MotionFramework.Event.IEventMessageAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new MotionFramework.Config.AssetConfigAdapter());
+		appdomain.RegisterCrossBindingAdaptor(new MotionFramework.Config.ConfigTableAdapter());
+		
 		// 执行CLR绑定
 		//ILRuntime.Runtime.Generated.CLRBindings.Initialize(appDomain);
 		Type classCLRBinding = Type.GetType("ILRuntime.Runtime.Generated.CLRBindings");
