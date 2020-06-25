@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Mono.Cecil;
+using ILRuntime.Mono.Cecil;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Intepreter;
@@ -17,6 +17,7 @@ namespace ILRuntime.CLR.TypeSystem
         TypeReference typeRef;
         TypeDefinition definition;
         ILRuntime.Runtime.Enviorment.AppDomain appdomain;
+        bool staticConstructorCalled;
         ILMethod staticConstructor;
         List<ILMethod> constructors;
         IType[] fieldTypes;
@@ -127,6 +128,18 @@ namespace ILRuntime.CLR.TypeSystem
                     InitializeFields();
                 if (methods == null)
                     InitializeMethods();
+                if (staticInstance == null && staticFieldTypes != null)
+                {
+                    staticInstance = new ILTypeStaticInstance(this);
+                }
+                if (staticInstance != null && !staticConstructorCalled)
+                {
+                    staticConstructorCalled = true;
+                    if (staticConstructor != null && (!TypeReference.HasGenericParameters || IsGenericInstance))
+                    {
+                        appdomain.Invoke(staticConstructor, null, null);
+                    }
+                }
                 return staticInstance;
             }
         }
@@ -438,7 +451,7 @@ namespace ILRuntime.CLR.TypeSystem
             }
         }
 
-        string fullName;
+        string fullName, fullNameForNested;
         public string FullName
         {
             get
@@ -464,6 +477,12 @@ namespace ILRuntime.CLR.TypeSystem
                     }
                     else
                         fullName = typeRef.FullName;
+                    if (typeRef.IsNested)
+                    {
+                        fullNameForNested = fullName.Replace("/", ".");
+                    }
+                    else
+                        fullNameForNested = fullName;
                 }
                 return fullName;
             }
@@ -595,7 +614,7 @@ namespace ILRuntime.CLR.TypeSystem
                                 baseType = adaptor;
                             }
                             else
-                                throw new TypeLoadException($"Cannot find Adaptor for: {baseType.TypeForCLR} Hotfix type : {this}");
+                                throw new TypeLoadException("Cannot find Adaptor for:" + baseType.TypeForCLR.ToString());
                             //继承了其他系统类型
                             //env.logger.Log_Error("ScriptType:" + Name + " Based On a SystemType:" + BaseType.Name);
                             //HasSysBase = true;
@@ -677,11 +696,6 @@ namespace ILRuntime.CLR.TypeSystem
                     lst.Add(m);
                 }
             }
-
-            if (staticConstructor != null && (!TypeReference.HasGenericParameters || IsGenericInstance))
-            {
-                appdomain.Invoke(staticConstructor, null, null);
-            }
         }
 
         public IMethod GetVirtualMethod(IMethod method)
@@ -702,7 +716,13 @@ namespace ILRuntime.CLR.TypeSystem
             var m = GetMethod(method.Name, method.Parameters, genericArguments, method.ReturnType, true);
             if (m == null && method.DeclearingType.IsInterface)
             {
-                m = GetMethod(string.Format("{0}.{1}", method.DeclearingType.FullName, method.Name), method.Parameters, genericArguments, method.ReturnType, true);
+                if(method.DeclearingType is ILType)
+                {
+                    ILType iltype = (ILType)method.DeclearingType;
+                    m = GetMethod(string.Format("{0}.{1}", iltype.fullNameForNested, method.Name), method.Parameters, genericArguments, method.ReturnType, true);
+                }
+                else
+                    m = GetMethod(string.Format("{0}.{1}", method.DeclearingType.FullName, method.Name), method.Parameters, genericArguments, method.ReturnType, true);
             }
 
             if (m == null)
@@ -1016,7 +1036,7 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 Array.Resize(ref staticFieldTypes, idxStatic);
                 Array.Resize(ref staticFieldDefinitions, idxStatic);
-                staticInstance = new ILTypeStaticInstance(this);
+                //staticInstance = new ILTypeStaticInstance(this);
             }
         }
 

@@ -1,38 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
 using System.IO;
 using UnityEditor;
-using UnityEngine;
+using ILRuntime.CLR.Method;
+using ILRuntime.CLR.TypeSystem;
+using ILRuntime.Runtime.Enviorment;
+using ILRuntime.Runtime.Intepreter;
 
 public static class ILRuntimeCLRBinding
 {
-	[MenuItem("Tools/ILRuntime/Generate CLR Binding Code")]
-	static void GenerateCLRBinding()
-	{
-		List<Type> types = new List<Type>();
-		types.Add(typeof(int));
-		types.Add(typeof(long));
-		types.Add(typeof(float));
-		types.Add(typeof(string));
-		types.Add(typeof(object));
-		types.Add(typeof(Array));
-		types.Add(typeof(Vector2));
-		types.Add(typeof(Vector3));
-		types.Add(typeof(Quaternion));
-		types.Add(typeof(GameObject));
-		types.Add(typeof(UnityEngine.Object));
-		types.Add(typeof(Transform));
-		types.Add(typeof(RectTransform));
-		types.Add(typeof(Time));
-		types.Add(typeof(Debug));
-
-		// 所有DLL内的类型的真实C#类型都是ILTypeInstance
-		types.Add(typeof(List<ILRuntime.Runtime.Intepreter.ILTypeInstance>));
-
-		// 生成绑定脚本
-		ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(types, ILRDefine.StrMyBindingFolderPath);
-	}
-
 	[MenuItem("Tools/ILRuntime/Generate CLR Binding Code by Analysis")]
 	static void GenerateCLRBindingByAnalysis()
 	{
@@ -48,7 +24,7 @@ public static class ILRuntimeCLRBinding
 			domain.LoadAssembly(fs);
 
 			// Crossbind Adapter is needed to generate the correct binding code
-			ILRHelper.Init(domain);
+			ILRRegister.Register(domain);
 
 			// 生成所有绑定脚本
 			ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, ILRDefine.StrMyBindingFolderPath);
@@ -56,5 +32,23 @@ public static class ILRuntimeCLRBinding
 
 		// 刷新目录
 		AssetDatabase.Refresh();
+	}
+
+	[MenuItem("Tools/ILRuntime/Generate CLR Adapter Code")]
+	static void GenerateCLRBindingAdapterCode()
+	{
+		CreateBindingAdapterFile(typeof(MotionFramework.AI.IFsmNode));
+		CreateBindingAdapterFile(typeof(Google.Protobuf.IMessage));
+
+		// 刷新目录
+		AssetDatabase.Refresh();
+	}
+
+	static void CreateBindingAdapterFile(Type type)
+	{
+		string content = CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(type, type.Namespace);
+		string filePath = $"{ILRDefine.StrMyAdapterFolderPath}/{type.Name}Adapter.cs";
+		File.WriteAllText(filePath, content, Encoding.UTF8);
+		UnityEngine.Debug.Log($"Create ILRuntime adapter file : {filePath}");
 	}
 }

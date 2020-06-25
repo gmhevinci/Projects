@@ -27,7 +27,12 @@ public class ILRDefine
 	public const string StrMyHotfixPDBFileName = "HotfixPDB";
 
 	/// <summary>
-	/// 我们设定的自动生成的绑定脚本文件夹路径
+	/// 我们设定的自动生成的绑定脚本夹路径
 	/// </summary>
-	public const string StrMyBindingFolderPath = "Assets/GameScript/Runtime/ILBinding";
+	public const string StrMyBindingFolderPath = "Assets/GameScript/Runtime/ILRBinding";
+
+	/// <summary>
+	/// 我们设定的自动生成的适配脚本夹路径
+	/// </summary>
+	public const string StrMyAdapterFolderPath = "Assets/GameScript/Runtime/ILRAdapter";
 }

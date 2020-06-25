@@ -132,7 +132,7 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule
 		{
 			_dllStream = new MemoryStream(dllAsset.bytes);
 			_pdbStream = new MemoryStream(pdbAsset.bytes);
-			var symbolReader = new Mono.Cecil.Pdb.PdbReaderProvider();
+			var symbolReader = new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider();
 			ILRDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 			ILRDomain.LoadAssembly(_dllStream, _pdbStream, symbolReader);
 		}
@@ -166,7 +166,7 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule
 
 		if (_isEnableILRuntime)
 		{
-			ILRHelper.Init(ILRDomain);
+			ILRRegister.Register(ILRDomain);
 			_startFun = new ILRStaticMethod(ILRDomain, typeName, startFunName, 0);
 			_updateFun = new ILRStaticMethod(ILRDomain, typeName, updateFunName, 0);
 			_lateUpdateFun = new ILRStaticMethod(ILRDomain, typeName, lateUpdateFunName, 0);
