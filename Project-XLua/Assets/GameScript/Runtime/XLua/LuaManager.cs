@@ -36,12 +36,6 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 		_luaEnv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
 		_luaEnv.AddBuildin("pb", XLua.LuaDLL.Lua.LoadLuaProfobuf);
 
-		// 初始化
-		InitLuaScript();
-
-		// Start
-		_funStart?.Invoke();
-
 		// 监听热更网络数据
 		NetworkManager.Instance.HotfixPackageCallback += OnHandleHotfixPackage;
 	}
@@ -57,6 +51,15 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	void IModule.OnGUI()
 	{
 		ConsoleGUI.Lable($"[{nameof(LuaManager)}] Lua memory : {_luaEnv.Memroy}Kb");
+	}
+
+	public void StartGame()
+	{
+		// 初始化
+		InitLuaScript();
+
+		// Start
+		_funStart?.Invoke();
 	}
 
 	/// <summary>

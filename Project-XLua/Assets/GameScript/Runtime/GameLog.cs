@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public static class GameLogger
+public static class GameLog
 {
 	public static void Log(string content)
 	{

@@ -115,10 +115,8 @@ public class GameLauncher : MonoBehaviour
 		// 创建场景管理器
 		MotionEngine.CreateModule<SceneManager>();
 
-		// 创建对象池管理器
-		MotionEngine.CreateModule<GameObjectPoolManager>();
-
 		// 直接进入游戏
 		MotionEngine.CreateModule<LuaManager>();
+		LuaManager.Instance.StartGame();
 	}
 }

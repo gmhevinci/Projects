@@ -22,14 +22,14 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 	public void StartGame()
 	{
-		GameLogger.Log("Hello game world.");
+		GameLog.Log("Hello game world.");
 		MotionEngine.StartCoroutine(LoadAssets());
 	}
 
 	private IEnumerator LoadAssets()
 	{
 		// 加载UI面板
-		GameLogger.Log("Load UIRoot.");
+		GameLog.Log("Load UIRoot.");
 		AssetReference rootRef = new AssetReference("UIPanel/UIRoot");
 		var rootHandle = rootRef.LoadAssetAsync<GameObject>();
 		yield return rootHandle;	
@@ -53,7 +53,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 		// 加载资源包
 		{
-			GameLogger.Log("Load texture package");
+			GameLog.Log("Load texture package");
 			AssetReference packRef = new AssetReference("UITexture/Foods");
 			var handle1 = packRef.LoadAssetAsync<Texture>("eggs");
 			yield return handle1;
