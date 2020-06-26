@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MotionFramework;
@@ -17,6 +18,15 @@ namespace Hotfix
 			HotfixNetManager.Instance.Create();
 			FsmManager.Instance.Create();
 
+			// 缓存所有的特性
+			{
+				Attribute attribute1 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UILogin));
+				ILRManager.Instance.CacheHotfixAttribute(typeof(UILogin), attribute1);
+
+				Attribute attribute2 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UITown));
+				ILRManager.Instance.CacheHotfixAttribute(typeof(UITown), attribute2);
+			}
+
 			// 开启协程加载资源
 			MotionEngine.StartCoroutine(LoadAssets());
 		}
@@ -28,13 +38,11 @@ namespace Hotfix
 			yield return uiRoot;
 
 			// 加载窗口
-			HotfixLogger.Log("开始加载窗口");
-			UITools.PreLoadWindow("Hotfix.UILogin", "UIPanel/LoginWindow");
-			//UILogin login = new UILogin();
-			//WindowManager.Instance.PreloadWindow(login, "UIPanel/LoginWindow");
+			HotfixLog.Log("开始加载窗口");
+			yield return WindowManager.Instance.OpenWindow(typeof(UILogin), "UIPanel/UILogin");
 
 			// 加载模型
-			HotfixLogger.Log("开始加载模型");
+			HotfixLog.Log("开始加载模型");
 			AssetReference assetRef = new AssetReference("Entity/Sphere");
 			var handle = assetRef.LoadAssetAsync<GameObject>();
 			yield return handle;
@@ -42,16 +50,16 @@ namespace Hotfix
 			var sphere = handle.InstantiateObject;
 			sphere.transform.position = Vector3.zero;
 			sphere.transform.localScale = Vector3.one * 3f;
-			HotfixLogger.Log($"模型名字：{sphere.name}");
+			HotfixLog.Log($"模型名字：{sphere.name}");
 
 			// 加载配表
-			HotfixLogger.Log("开始加载配表");
-			CfgAvatar cfgInstance = new CfgAvatar();
-			yield return ConfigManager.Instance.LoadConfig(cfgInstance, "Config/Avatar");
+			HotfixLog.Log("开始加载配表");
+			yield return ConfigManager.Instance.LoadConfig(typeof(CfgAvatar), "Config/Avatar");
 
-			CfgAvatarTable table = cfgInstance.GetTable(1001) as CfgAvatarTable;
-			HotfixLogger.Log($"表格数据：{table.HeadIcon}");
-			HotfixLogger.Log($"表格数据：{table.Model}");
+			CfgAvatar config = ConfigManager.Instance.GetConfig(typeof(CfgAvatar)) as CfgAvatar;
+			CfgAvatarTable table = config.GetTable(1001) as CfgAvatarTable;
+			HotfixLog.Log($"表格数据：{table.HeadIcon}");
+			HotfixLog.Log($"表格数据：{table.Model}");
 		}
 
 		public void Update()

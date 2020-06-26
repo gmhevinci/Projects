@@ -141,6 +141,10 @@ public class GameLauncher : MonoBehaviour
 		createParameters.IsEnableILRuntime = EnableILRuntime;
 		MotionEngine.CreateModule<ILRManager>(createParameters);
 
+		// 反射服务服务接口
+		ConfigManager.Instance.ActivatorServices = ILRManager.Instance;
+		WindowManager.Instance.ActivatorServices = ILRManager.Instance;
+
 		// 开始游戏
 		ILRManager.Instance.StartGame();
 	}

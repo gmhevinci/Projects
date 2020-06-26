@@ -34,10 +34,10 @@ namespace Hotfix
 		{
 			DefaultNetworkPackage package = pack as DefaultNetworkPackage;
 			Type msgType = _types.GetValueByKey(package.MsgID);
-			HotfixLogger.Log($"Handle hotfix net message : {msgType}");
+			HotfixLog.Log($"Handle hotfix net message : {msgType}");
 			object instance = Activator.CreateInstance(msgType);
 			var message = ProtobufHelper.Decode(instance, package.BodyBytes);
-			HotfixLogger.Log(message.ToString());
+			HotfixLog.Log(message.ToString());
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace Hotfix
 		/// </summary>
 		public void SendHotfixMsg(IHotfixNetMessage msg)
 		{
-			HotfixLogger.Log($"Send hotfix net message : {msg.GetType()}");
+			HotfixLog.Log($"Send hotfix net message : {msg.GetType()}");
 			int msgID = _types.GetKeyByValue(msg.GetType());
 			DefaultNetworkPackage package = new DefaultNetworkPackage();
 			package.IsHotfixPackage = true;

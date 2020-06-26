@@ -67,7 +67,7 @@ public static class ILRRegister
 		}
 		else
 		{
-			GameLogger.Warning("ILRuntime not generated binding scripts.");
+			GameLog.Warning("ILRuntime not generated binding scripts.");
 
 			// 注册LitJson
 			LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);

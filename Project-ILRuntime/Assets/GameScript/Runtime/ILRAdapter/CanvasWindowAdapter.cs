@@ -2,6 +2,7 @@
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Intepreter;
+using AppDomain = ILRuntime.Runtime.Enviorment.AppDomain;
 
 public class CanvasWindowAdapter : CrossBindingAdaptor
 {
@@ -12,7 +13,6 @@ public class CanvasWindowAdapter : CrossBindingAdaptor
 			return typeof(global::CanvasWindow);
 		}
 	}
-
 	public override Type AdaptorType
 	{
 		get
@@ -20,136 +20,74 @@ public class CanvasWindowAdapter : CrossBindingAdaptor
 			return typeof(Adapter);
 		}
 	}
-
-	public override object CreateCLRInstance(ILRuntime.Runtime.Enviorment.AppDomain appdomain, ILTypeInstance instance)
+	public override object CreateCLRInstance(AppDomain appdomain, ILTypeInstance instance)
 	{
 		return new Adapter(appdomain, instance);
 	}
 
 	public class Adapter : global::CanvasWindow, CrossBindingAdaptorType
 	{
-		ILTypeInstance instance;
-		ILRuntime.Runtime.Enviorment.AppDomain appdomain;
+		public ILTypeInstance ILInstance { get; }
+		private readonly AppDomain _appDomain;
+		private readonly AdaptMethod mOnCreate;
+		private readonly AdaptMethod mOnDestroy;
+		private readonly AdaptMethod mOnRefresh;
+		private readonly AdaptMethod mOnUpdate;
+		private readonly AdaptMethod mOnSortDepth;
+		private readonly AdaptMethod mOnSetVisible;
 
-		CrossBindingFunctionInfo<System.Int32> mget_Depth_0 = new CrossBindingFunctionInfo<System.Int32>("get_Depth");
-		CrossBindingMethodInfo<System.Int32> mset_Depth_1 = new CrossBindingMethodInfo<System.Int32>("set_Depth");
-		CrossBindingFunctionInfo<System.Boolean> mget_Visible_2 = new CrossBindingFunctionInfo<System.Boolean>("get_Visible");
-		CrossBindingMethodInfo<System.Boolean> mset_Visible_3 = new CrossBindingMethodInfo<System.Boolean>("set_Visible");
-		CrossBindingMethodInfo<UnityEngine.GameObject> mOnAssetLoad_4 = new CrossBindingMethodInfo<UnityEngine.GameObject>("OnAssetLoad");
-		CrossBindingMethodInfo mOnCreate_5 = new CrossBindingMethodInfo("OnCreate");
-		CrossBindingMethodInfo mOnDestroy_6 = new CrossBindingMethodInfo("OnDestroy");
-		CrossBindingMethodInfo mOnRefresh_7 = new CrossBindingMethodInfo("OnRefresh");
-		CrossBindingMethodInfo mOnUpdate_8 = new CrossBindingMethodInfo("OnUpdate");
-		CrossBindingMethodInfo mOnSortDepth_9 = new CrossBindingMethodInfo("OnSortDepth");
-		CrossBindingMethodInfo mOnSetVisible_10 = new CrossBindingMethodInfo("OnSetVisible");
-
-		public Adapter()
+		public Adapter(AppDomain appdomain, ILTypeInstance instance)
 		{
+			_appDomain = appdomain;
+			ILInstance = instance;
 
-		}
-
-		public Adapter(ILRuntime.Runtime.Enviorment.AppDomain appdomain, ILTypeInstance instance)
-		{
-			this.appdomain = appdomain;
-			this.instance = instance;
-		}
-
-		public ILTypeInstance ILInstance { get { return instance; } }
-
-		protected override void OnAssetLoad(UnityEngine.GameObject go)
-		{
-			if (mOnAssetLoad_4.CheckShouldInvokeBase(this.instance))
-				base.OnAssetLoad(go);
-			else
-				mOnAssetLoad_4.Invoke(this.instance, go);
+			mOnCreate = new AdaptMethod(_appDomain, ILInstance, "OnCreate", 0, false);
+			mOnDestroy = new AdaptMethod(_appDomain, ILInstance, "OnDestroy", 0, false);
+			mOnRefresh = new AdaptMethod(_appDomain, ILInstance, "OnRefresh", 0, false);
+			mOnUpdate = new AdaptMethod(_appDomain, ILInstance, "OnUpdate", 0, false);
+			mOnSortDepth = new AdaptMethod(_appDomain, ILInstance, "OnSortDepth", 0, true);
+			mOnSetVisible = new AdaptMethod(_appDomain, ILInstance, "OnSetVisible", 0, true);
 		}
 
 		public override void OnCreate()
 		{
-			mOnCreate_5.Invoke(this.instance);
+			mOnCreate.Invoke();
 		}
-
 		public override void OnDestroy()
 		{
-			mOnDestroy_6.Invoke(this.instance);
+			mOnDestroy.Invoke();
 		}
-
 		public override void OnRefresh()
 		{
-			mOnRefresh_7.Invoke(this.instance);
+			mOnRefresh.Invoke();
 		}
-
 		public override void OnUpdate()
 		{
-			mOnUpdate_8.Invoke(this.instance);
+			mOnUpdate.Invoke();
 		}
-
 		public override void OnSortDepth()
 		{
-			if (mOnSortDepth_9.CheckShouldInvokeBase(this.instance))
+			mOnSortDepth.Invoke();
+			if (mOnSortDepth.ShouldInvokeBase())
 				base.OnSortDepth();
-			else
-				mOnSortDepth_9.Invoke(this.instance);
 		}
-
 		public override void OnSetVisible()
 		{
-			if (mOnSetVisible_10.CheckShouldInvokeBase(this.instance))
+			mOnSetVisible.Invoke();
+			if (mOnSetVisible.ShouldInvokeBase())
 				base.OnSetVisible();
-			else
-				mOnSetVisible_10.Invoke(this.instance);
-		}
-
-		public override System.Int32 Depth
-		{
-			get
-			{
-				if (mget_Depth_0.CheckShouldInvokeBase(this.instance))
-					return base.Depth;
-				else
-					return mget_Depth_0.Invoke(this.instance);
-
-			}
-			set
-			{
-				if (mset_Depth_1.CheckShouldInvokeBase(this.instance))
-					base.Depth = value;
-				else
-					mset_Depth_1.Invoke(this.instance, value);
-
-			}
-		}
-
-		public override System.Boolean Visible
-		{
-			get
-			{
-				if (mget_Visible_2.CheckShouldInvokeBase(this.instance))
-					return base.Visible;
-				else
-					return mget_Visible_2.Invoke(this.instance);
-
-			}
-			set
-			{
-				if (mset_Visible_3.CheckShouldInvokeBase(this.instance))
-					base.Visible = value;
-				else
-					mset_Visible_3.Invoke(this.instance, value);
-
-			}
 		}
 
 		public override string ToString()
 		{
-			IMethod m = appdomain.ObjectType.GetMethod("ToString", 0);
-			m = instance.Type.GetVirtualMethod(m);
+			IMethod m = _appDomain.ObjectType.GetMethod("ToString", 0);
+			m = ILInstance.Type.GetVirtualMethod(m);
 			if (m == null || m is ILMethod)
 			{
-				return instance.ToString();
+				return ILInstance.ToString();
 			}
 			else
-				return instance.Type.FullName;
+				return ILInstance.Type.FullName;
 		}
 	}
 }

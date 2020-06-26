@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Hotfix
 {
-	public static class HotfixLogger 
+	public static class HotfixLog
 	{
 		public static void Log(string content)
 		{

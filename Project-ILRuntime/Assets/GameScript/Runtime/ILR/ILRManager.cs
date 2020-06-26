@@ -9,8 +9,9 @@ using MotionFramework;
 using MotionFramework.Resource;
 using MotionFramework.Console;
 using MotionFramework.Patch;
+using MotionFramework.Window;
 
-public class ILRManager : ModuleSingleton<ILRManager>, IModule
+public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServices
 {
 	/// <summary>
 	/// 游戏模块创建参数
@@ -183,4 +184,29 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule
 			HotfixAssemblyTypes = _monoAssembly.GetTypes().ToList<Type>();
 		}
 	}
+
+	#region 反射服务接口
+	private readonly Dictionary<Type, Attribute> _cacheAttributes = new Dictionary<Type, Attribute>();
+
+	/// <summary>
+	/// 缓存热更新特性
+	/// </summary>
+	public void CacheHotfixAttribute(Type type, Attribute attribute)
+	{
+		_cacheAttributes.Add(type, attribute);
+	}
+
+	object IActivatorServices.CreateInstance(Type type)
+	{
+		if (_isEnableILRuntime)
+			return ILRDomain.Instantiate(type.FullName).CLRInstance;
+		else
+			return Activator.CreateInstance(type);
+	}
+	Attribute IActivatorServices.GetAttribute(Type type)
+	{
+		_cacheAttributes.TryGetValue(type, out Attribute result);
+		return result;
+	}
+	#endregion
 }

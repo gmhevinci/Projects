@@ -18,6 +18,9 @@ namespace ILRuntime.Runtime.Generated
         {
             MotionFramework_IO_ByteBuffer_Binding.Register(app);
             MotionFramework_Config_ConfigTable_Binding.Register(app);
+            System_Type_Binding.Register(app);
+            MotionFramework_ModuleSingleton_1_ILRManager_Binding.Register(app);
+            ILRManager_Binding.Register(app);
             MotionFramework_MotionEngine_Binding.Register(app);
             MotionFramework_ModuleSingleton_1_WindowManager_Binding.Register(app);
             MotionFramework_Window_WindowManager_Binding.Register(app);
@@ -34,10 +37,7 @@ namespace ILRuntime.Runtime.Generated
             System_NotSupportedException_Binding.Register(app);
             MotionFramework_AI_FiniteStateMachine_Binding.Register(app);
             UnityEngine_Debug_Binding.Register(app);
-            System_Type_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
-            MotionFramework_ModuleSingleton_1_ILRManager_Binding.Register(app);
-            ILRManager_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding.Register(app);
             System_NotImplementedException_Binding.Register(app);
             Google_Protobuf_ProtoPreconditions_Binding.Register(app);
@@ -55,6 +55,7 @@ namespace ILRuntime.Runtime.Generated
             System_Exception_Binding.Register(app);
             MotionFramework_ModuleSingleton_1_EventManager_Binding.Register(app);
             MotionFramework_Event_EventManager_Binding.Register(app);
+            UnityEngine_UI_UISprite_Binding.Register(app);
 
             ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
             __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector2));

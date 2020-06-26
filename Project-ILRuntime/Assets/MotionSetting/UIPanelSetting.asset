@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fd1df836484fe499fb9363d9d0ac7d, type: 3}
   m_Name: UIPanelSetting
   m_EditorClassIdentifier: 
-  UISpriteDirectory: 
-  UIAtlasDirectory: 
+  UISpriteDirectory: Assets/GameArt/UISprite
+  UIAtlasDirectory: Assets/GameRes/UIAtals

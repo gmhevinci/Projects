@@ -11,7 +11,7 @@ namespace Hotfix
 
 		public void OnEnter()
 		{
-			HotfixLogger.Log("进入FsmInit");
+			HotfixLog.Log("进入FsmInit");
 		}
 		public void OnUpdate()
 		{

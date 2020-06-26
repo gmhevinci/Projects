@@ -5,7 +5,7 @@ namespace Hotfix
 	{
 		public static void Start()
 		{
-			HotfixLogger.Log("Hello ILRuntime World");
+			HotfixLog.Log("Hello ILRuntime World");
 			Demo.Instance.Start();
 		}
 		public static void Update()

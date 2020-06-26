@@ -35,11 +35,11 @@ namespace Hotfix
 		{
 			if (msg is NetworkEventMessageDefine.ConnectFail)
 			{
-				HotfixLogger.Log("连接服务器失败");
+				HotfixLog.Log("连接服务器失败");
 			}
 			else if (msg is NetworkEventMessageDefine.ConnectSuccess)
 			{
-				HotfixLogger.Log("连接服务器成功");
+				HotfixLog.Log("连接服务器成功");
 
 				// 发送登录消息
 				C2R_Login loginMsg = new C2R_Login
@@ -57,10 +57,13 @@ namespace Hotfix
 			if (NetworkManager.Instance.States == ENetworkStates.Connecting)
 				return;
 
-			HotfixLogger.Log("开始连接服务器");
-
 			// 尝试连接ET服务器
-			NetworkManager.Instance.ConnectServer("127.0.0.1", 10002);
+			//HotfixLog.Log("开始连接服务器");
+			//NetworkManager.Instance.ConnectServer("127.0.0.1", 10002);
+
+			// 打开新的窗口
+			WindowManager.Instance.OpenWindow(typeof(UITown), "UIPanel/UITown");
+			WindowManager.Instance.CloseWindow(typeof(UILogin));
 		}
 	}
 }

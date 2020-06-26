@@ -9,7 +9,7 @@ namespace Hotfix
 
 		public void OnEnter()
 		{
-			HotfixLogger.Log("进入FsmPlay");
+			HotfixLog.Log("进入FsmPlay");
 		}
 		public void OnUpdate()
 		{
