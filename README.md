@@ -1,11 +1,11 @@
 ## Project-XLua
-基于**XLua**热更技术的工程示例
+基于**XLua**热更技术的示例工程
 
 ## Project-ILRuntime
-基于**ILRuntime**热更技术的工程示例
+基于**ILRuntime**热更技术的示例工程
 
 ## Project-Patch
-资源补丁热更的工程示例
+资源补丁热更的示例工程
 
 ## Project-FairyGUI
-FairyGUI接入的工程示例
+FairyGUI接入的示例工程
