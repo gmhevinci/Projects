@@ -139,6 +139,7 @@ public class GameLauncher : MonoBehaviour
 		// 创建ILR管理器
 		ILRManager.CreateParameters createParameters = new ILRManager.CreateParameters();
 		createParameters.IsEnableILRuntime = EnableILRuntime;
+		createParameters.SimulationOnEditor = SimulationOnEditor;
 		MotionEngine.CreateModule<ILRManager>(createParameters);
 
 		// 反射服务服务接口

@@ -22,12 +22,18 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServic
 		/// 是否启用ILRuntime，否则使用mono模式运行
 		/// </summary>
 		public bool IsEnableILRuntime;
+
+		/// <summary>
+		/// 编辑器的模拟运行
+		/// </summary>
+		public bool SimulationOnEditor;
 	}
 
 	private MemoryStream _dllStream;
 	private MemoryStream _pdbStream;
 	private Assembly _monoAssembly;
 	private bool _isEnableILRuntime;
+	private bool _isSimulationOnEditor;
 
 	// 热更新层相关函数
 	private IStaticMethod _startFun;
@@ -53,6 +59,7 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServic
 			throw new Exception($"{nameof(ILRManager)} create param is invalid.");
 
 		_isEnableILRuntime = createParam.IsEnableILRuntime;
+		_isSimulationOnEditor = createParam.SimulationOnEditor;
 	}
 	void IModule.OnUpdate()
 	{
@@ -148,12 +155,12 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServic
 	private TextAsset LoadDLL()
 	{
 		string location = $"Assembly/{ILRDefine.StrMyHotfixDLLFileName}";
-		return ResourceManager.Instance.SyncLoad<TextAsset>(location, PatchDefine.AssetBundleDefaultVariant);
+		return LoadAsset(location);
 	}
 	private TextAsset LoadPDB()
 	{
 		string location = $"Assembly/{ILRDefine.StrMyHotfixPDBFileName}";
-		return ResourceManager.Instance.SyncLoad<TextAsset>(location, PatchDefine.AssetBundleDefaultVariant);
+		return LoadAsset(location);
 	}
 
 	// 初始化热更程序
@@ -182,6 +189,33 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServic
 			_lateUpdateFun = new MonoStaticMethod(type, lateUpdateFunName);
 			_uiLanguageFun = new MonoStaticMethod(type, uiLanguageFunName);
 			HotfixAssemblyTypes = _monoAssembly.GetTypes().ToList<Type>();
+		}
+	}
+
+	/// <summary>
+	/// 同步加载程序集文件
+	/// </summary>
+	private TextAsset LoadAsset(string location)
+	{
+		string loadPath = ResourceManager.Instance.GetLoadPath(location);
+		if (_isSimulationOnEditor)
+		{
+#if UNITY_EDITOR
+			return UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(loadPath);
+#else
+			throw new Exception($"AssetSystem simulation only support unity editor.");
+#endif
+		}
+		else
+		{
+			AssetBundle bundle = AssetBundle.LoadFromFile(loadPath);
+			if (bundle == null)
+				return null;
+
+			string fileName = Path.GetFileName(location);
+			var result = bundle.LoadAsset<TextAsset>(fileName);
+			bundle.Unload(false); // 注意：这里要卸载AssetBundle
+			return result;
 		}
 	}
 

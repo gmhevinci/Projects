@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
 using System.Text;
-using System;
 using UnityEngine;
 using XLua;
 using MotionFramework;
@@ -13,6 +12,11 @@ using MotionFramework.Patch;
 
 public class LuaManager : ModuleSingleton<LuaManager>, IModule
 {
+	public class CreateParameters
+	{
+		public bool SimulationOnEditor;
+	}
+
 	[CSharpCallLua]
 	public delegate string LanguageDelegate(string key);
 	[CSharpCallLua]
@@ -27,10 +31,13 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	private Action _funUpdate;
 	private LanguageDelegate _funLanguage;
 	private NetMessageDelegate _funNetMessage;
-
+	private bool _isSimulationOnEditor;
 
 	void IModule.OnCreate(object createParam)
 	{
+		CreateParameters param = createParam as CreateParameters;
+		_isSimulationOnEditor = param.SimulationOnEditor;
+
 		_luaEnv.AddLoader(CustomLoaderMethod);
 		_luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
 		_luaEnv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
@@ -89,7 +96,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	/// </summary>
 	private void InitLuaScript()
 	{
-		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>("Lua/Main.lua", PatchDefine.AssetBundleDefaultVariant);
+		TextAsset asset = LoadAsset("Lua/Main.lua");
 		_gameTable = ExecuteScript(asset.bytes, "Main") as LuaTable;
 		_funStart = _gameTable.Get<Action>("Start");
 		_funUpdate = _gameTable.Get<Action>("Update");
@@ -102,12 +109,11 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	/// </summary>
 	private byte[] CustomLoaderMethod(ref string fileName)
 	{
-		// 同步加载LUA文件
-		string resName = $"Lua/{fileName}.lua";
-		TextAsset asset = ResourceManager.Instance.SyncLoad<TextAsset>(resName, PatchDefine.AssetBundleDefaultVariant);
+		string location = $"Lua/{fileName}.lua";
+		TextAsset asset = LoadAsset(location);
 		if(asset == null)
 		{
-			UnityEngine.Debug.LogWarning($"Failed to load lua file : {resName}");
+			Debug.LogWarning($"Failed to load lua file : {location}");
 			return null;
 		}
 		return asset.bytes;
@@ -134,5 +140,32 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	{
 		DefaultNetworkPackage package = pack as DefaultNetworkPackage;
 		_funNetMessage(package.MsgID, package.BodyBytes);
+	}
+
+	/// <summary>
+	/// 同步加载LUA文件
+	/// </summary>
+	private TextAsset LoadAsset(string location)
+	{
+		string loadPath = ResourceManager.Instance.GetLoadPath(location);
+		if (_isSimulationOnEditor)
+		{
+#if UNITY_EDITOR
+			return UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(loadPath);
+#else
+			throw new Exception($"AssetSystem simulation only support unity editor.");
+#endif
+		}
+		else
+		{
+			AssetBundle bundle = AssetBundle.LoadFromFile(loadPath);
+			if (bundle == null)
+				return null;
+
+			string fileName = Path.GetFileName(location);
+			var result = bundle.LoadAsset<TextAsset>(fileName);
+			bundle.Unload(false); // 注意：这里要卸载AssetBundle
+			return result;
+		}
 	}
 }
