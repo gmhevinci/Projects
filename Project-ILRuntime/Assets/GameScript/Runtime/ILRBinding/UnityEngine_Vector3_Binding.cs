@@ -31,9 +31,19 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(UnityEngine.Vector3), typeof(System.Single)};
             method = type.GetMethod("op_Multiply", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, op_Multiply_2);
+            args = new Type[]{typeof(System.Single), typeof(UnityEngine.Vector3)};
+            method = type.GetMethod("op_Multiply", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, op_Multiply_3);
+            args = new Type[]{typeof(UnityEngine.Vector3), typeof(UnityEngine.Vector3)};
+            method = type.GetMethod("op_Addition", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, op_Addition_4);
 
             app.RegisterCLRCreateDefaultInstance(type, () => new UnityEngine.Vector3());
+            app.RegisterCLRCreateArrayInstance(type, s => new UnityEngine.Vector3[s]);
 
+            args = new Type[]{typeof(System.Single), typeof(System.Single), typeof(System.Single)};
+            method = type.GetConstructor(flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Ctor_0);
 
         }
 
@@ -144,6 +154,106 @@ namespace ILRuntime.Runtime.Generated
             }
         }
 
+        static StackObject* op_Multiply_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Vector3 @a = new UnityEngine.Vector3();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.ParseValue(ref @a, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+                __intp.Free(ptr_of_this_method);
+            }
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Single @d = *(float*)&ptr_of_this_method->Value;
+
+
+            var result_of_this_method = d * a;
+
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
+        }
+
+        static StackObject* op_Addition_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Vector3 @b = new UnityEngine.Vector3();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.ParseValue(ref @b, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @b = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+                __intp.Free(ptr_of_this_method);
+            }
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            UnityEngine.Vector3 @a = new UnityEngine.Vector3();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.ParseValue(ref @a, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+                __intp.Free(ptr_of_this_method);
+            }
+
+
+            var result_of_this_method = a + b;
+
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
+        }
+
+
+        static StackObject* Ctor_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Single @z = *(float*)&ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Single @y = *(float*)&ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            System.Single @x = *(float*)&ptr_of_this_method->Value;
+
+
+            var result_of_this_method = new UnityEngine.Vector3(@x, @y, @z);
+
+            if(!isNewObj)
+            {
+                __ret--;
+                if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                    ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.WriteBackValue(__domain, __ret, __mStack, ref result_of_this_method);
+                } else {
+                    WriteBackInstance(__domain, __ret, __mStack, ref result_of_this_method);
+                }
+                return __ret;
+            }
+
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
+                return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
+        }
 
 
     }

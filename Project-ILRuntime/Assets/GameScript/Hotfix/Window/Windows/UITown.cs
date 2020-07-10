@@ -8,7 +8,7 @@ using MotionFramework.Window;
 
 namespace Hotfix
 {
-	[Window((int)EWindowLayer.Panel, false, true)]
+	[Window((int)EWindowLayer.Panel, true)]
 	sealed class UITown : CanvasWindow
 	{
 		private UISprite _photo;
@@ -23,6 +23,7 @@ namespace Hotfix
 			AddButtonListener("UITown/Skill3", OnClickSkill3);
 			AddButtonListener("UITown/Skill4", OnClickSkill4);
 			AddButtonListener("UITown/Skill5", OnClickSkill5);
+			AddButtonListener("UITown/Map", OnClickMap);
 		}
 		public override void OnDestroy()
 		{
@@ -53,6 +54,10 @@ namespace Hotfix
 		private void OnClickSkill5()
 		{
 			_photo.SpriteName = "Photo5";
+		}
+		private void OnClickMap()
+		{
+			UITools.OpenWindow<UIMap>();
 		}
 	}
 }

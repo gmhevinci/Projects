@@ -13,6 +13,7 @@ using MotionFramework.Patch;
 using MotionFramework.Scene;
 using MotionFramework.Pool;
 using MotionFramework.Window;
+using MotionFramework.Tween;
 
 public class GameLauncher : MonoBehaviour
 {
@@ -104,6 +105,9 @@ public class GameLauncher : MonoBehaviour
 	{
 		// 创建事件管理器
 		MotionEngine.CreateModule<EventManager>();
+
+		// 创建补间管理器
+		MotionEngine.CreateModule<TweenManager>();
 
 		// 创建网络管理器
 		var networkCreateParam = new NetworkManager.CreateParameters();

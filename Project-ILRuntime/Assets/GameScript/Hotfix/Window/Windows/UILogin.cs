@@ -9,7 +9,7 @@ using MotionFramework.Network;
 
 namespace Hotfix
 {
-	[Window((int)EWindowLayer.Panel, false, true)]
+	[Window((int)EWindowLayer.Panel, true)]
 	sealed class UILogin : CanvasWindow
 	{
 		public override void OnCreate()
@@ -62,8 +62,8 @@ namespace Hotfix
 			//NetworkManager.Instance.ConnectServer("127.0.0.1", 10002);
 
 			// 打开新的窗口
-			WindowManager.Instance.OpenWindow(typeof(UITown), "UIPanel/UITown");
-			WindowManager.Instance.CloseWindow(typeof(UILogin));
+			UITools.OpenWindow<UITown>();
+			UITools.CloseWindow<UILogin>();
 		}
 	}
 }

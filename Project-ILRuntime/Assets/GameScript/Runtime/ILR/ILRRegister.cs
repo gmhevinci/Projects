@@ -20,6 +20,15 @@ public static class ILRRegister
 		appdomain.DelegateManager.RegisterMethodDelegate<MotionFramework.Config.AssetConfig>();
 		appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.GameObject>();
 
+		// 注册补间系统委托
+		appdomain.DelegateManager.RegisterFunctionDelegate<float, float, float, float, float>();
+		appdomain.DelegateManager.RegisterFunctionDelegate<float, float, float, float> ();
+		appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector2, UnityEngine.Vector2, float, UnityEngine.Vector2>();
+		appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector3, UnityEngine.Vector3, float, UnityEngine.Vector3>();
+		appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector4, UnityEngine.Vector4, float, UnityEngine.Vector4>();
+		appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Color, UnityEngine.Color, float, UnityEngine.Color>();
+		appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Quaternion, UnityEngine.Quaternion, float, UnityEngine.Quaternion>();
+
 		// 注册委托转换器
 		appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
 		{
@@ -40,6 +49,13 @@ public static class ILRRegister
 			return new UnityEngine.Events.UnityAction<bool>((arg0) =>
 			{
 				((Action<bool>)act)(arg0);
+			});
+		});
+		appdomain.DelegateManager.RegisterDelegateConvertor<MotionFramework.Tween.TweenNode<UnityEngine.Vector2>.TweenLerpDelegate>((act) =>
+		{
+			return new MotionFramework.Tween.TweenNode<UnityEngine.Vector2>.TweenLerpDelegate((from, to, progress) =>
+			{
+				return ((Func<UnityEngine.Vector2, UnityEngine.Vector2, System.Single, UnityEngine.Vector2>)act)(from, to, progress);
 			});
 		});
 

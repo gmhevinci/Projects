@@ -45,8 +45,8 @@ public class CanvasWindowAdapter : CrossBindingAdaptor
 			mOnDestroy = new AdaptMethod(_appDomain, ILInstance, "OnDestroy", 0, false);
 			mOnRefresh = new AdaptMethod(_appDomain, ILInstance, "OnRefresh", 0, false);
 			mOnUpdate = new AdaptMethod(_appDomain, ILInstance, "OnUpdate", 0, false);
-			mOnSortDepth = new AdaptMethod(_appDomain, ILInstance, "OnSortDepth", 0, true);
-			mOnSetVisible = new AdaptMethod(_appDomain, ILInstance, "OnSetVisible", 0, true);
+			mOnSortDepth = new AdaptMethod(_appDomain, ILInstance, "OnSortDepth", 1, true);
+			mOnSetVisible = new AdaptMethod(_appDomain, ILInstance, "OnSetVisible", 1, true);
 		}
 
 		public override void OnCreate()
@@ -65,17 +65,17 @@ public class CanvasWindowAdapter : CrossBindingAdaptor
 		{
 			mOnUpdate.Invoke();
 		}
-		public override void OnSortDepth()
+		public override void OnSortDepth(int depth)
 		{
-			mOnSortDepth.Invoke();
+			mOnSortDepth.Invoke(depth);
 			if (mOnSortDepth.ShouldInvokeBase())
-				base.OnSortDepth();
+				base.OnSortDepth(depth);
 		}
-		public override void OnSetVisible()
+		public override void OnSetVisible(bool visible)
 		{
-			mOnSetVisible.Invoke();
+			mOnSetVisible.Invoke(visible);
 			if (mOnSetVisible.ShouldInvokeBase())
-				base.OnSetVisible();
+				base.OnSetVisible(visible);
 		}
 
 		public override string ToString()
