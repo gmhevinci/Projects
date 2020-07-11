@@ -24,7 +24,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	
 
 	private readonly LuaEnv _luaEnv = new LuaEnv();
-	private readonly RepeatTimer _tickTimer = new RepeatTimer(0, 1f);
+	private readonly Timer _tickTimer = Timer.CreatePepeatTimer(0, 1f);
 
 	private LuaTable _gameTable;
 	private Action _funStart;
