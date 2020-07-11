@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 135085244592460784}
   - component: {fileID: 1320951730663303294}
   m_Layer: 5
-  m_Name: UITown
+  m_Name: UIMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,24 +297,24 @@ MonoBehaviour:
   CacheAtlasTags:
   - Common
   ElementPath:
-  - UITown
-  - UITown/Map
-  - UITown/Map/Text
-  - UITown/Photo
-  - UITown/Hp
-  - UITown/Hp/Text
-  - UITown/Mp
-  - UITown/Mp/Text
-  - UITown/Skill1
-  - UITown/Skill1/Text
-  - UITown/Skill2
-  - UITown/Skill2/Text
-  - UITown/Skill3
-  - UITown/Skill3/Text
-  - UITown/Skill4
-  - UITown/Skill4/Text
-  - UITown/Skill5
-  - UITown/Skill5/Text
+  - UIMain
+  - UIMain/Map
+  - UIMain/Map/Text
+  - UIMain/Photo
+  - UIMain/Hp
+  - UIMain/Hp/Text
+  - UIMain/Mp
+  - UIMain/Mp/Text
+  - UIMain/Skill1
+  - UIMain/Skill1/Text
+  - UIMain/Skill2
+  - UIMain/Skill2/Text
+  - UIMain/Skill3
+  - UIMain/Skill3/Text
+  - UIMain/Skill4
+  - UIMain/Skill4/Text
+  - UIMain/Skill5
+  - UIMain/Skill5/Text
   ElementTrans:
   - {fileID: 8246451440243464219}
   - {fileID: 3965420060843903528}

@@ -9,21 +9,21 @@ using MotionFramework.Window;
 namespace Hotfix
 {
 	[Window((int)EWindowLayer.Panel, true)]
-	sealed class UITown : CanvasWindow
+	sealed class UIMain : CanvasWindow
 	{
 		private UISprite _photo;
 
 		public override void OnCreate()
 		{
-			_photo = GetUIComponent<UISprite>("UITown/Photo");
+			_photo = GetUIComponent<UISprite>("UIMain/Photo");
 
 			// 监听按钮点击事件
-			AddButtonListener("UITown/Skill1", OnClickSkill1);
-			AddButtonListener("UITown/Skill2", OnClickSkill2);
-			AddButtonListener("UITown/Skill3", OnClickSkill3);
-			AddButtonListener("UITown/Skill4", OnClickSkill4);
-			AddButtonListener("UITown/Skill5", OnClickSkill5);
-			AddButtonListener("UITown/Map", OnClickMap);
+			AddButtonListener("UIMain/Skill1", OnClickSkill1);
+			AddButtonListener("UIMain/Skill2", OnClickSkill2);
+			AddButtonListener("UIMain/Skill3", OnClickSkill3);
+			AddButtonListener("UIMain/Skill4", OnClickSkill4);
+			AddButtonListener("UIMain/Skill5", OnClickSkill5);
+			AddButtonListener("UIMain/Map", OnClickMap);
 		}
 		public override void OnDestroy()
 		{

@@ -62,7 +62,7 @@ namespace Hotfix
 			//NetworkManager.Instance.ConnectServer("127.0.0.1", 10002);
 
 			// 打开新的窗口
-			UITools.OpenWindow<UITown>();
+			UITools.OpenWindow<UIMain>();
 			UITools.CloseWindow<UILogin>();
 		}
 	}

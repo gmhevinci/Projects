@@ -56,20 +56,24 @@ namespace ILRuntime.Runtime.Generated
             GameLog_Binding.Register(app);
             MotionFramework_ModuleSingleton_1_EventManager_Binding.Register(app);
             MotionFramework_Event_EventManager_Binding.Register(app);
-            MotionFramework_Tween_ITweenNode_Binding.Register(app);
-            UnityEngine_UnityEngine_CanvasGroup_Tween_Extension_Binding.Register(app);
+            UnityEngine_UI_UISprite_Binding.Register(app);
             UnityEngine_Component_Binding.Register(app);
+            MotionFramework_Tween_ITweenNode_Binding.Register(app);
             UnityEngine_UnityEngine_Transform_Tween_Extension_Binding.Register(app);
             MotionFramework_Tween_TweenNode_1_Vector3_Binding.Register(app);
             MotionFramework_Tween_ParallelNode_Binding.Register(app);
             MotionFramework_Window_UIWindow_Binding.Register(app);
             MotionFramework_Tween_TweenGroup_Binding.Register(app);
+            UnityEngine_Color_Binding.Register(app);
+            UnityEngine_UI_UnityEngine_UI_Image_Tween_Extension_Binding.Register(app);
+            MotionFramework_Tween_TweenNode_1_Color_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_UnityEngine_RectTransform_Tween_Extension_Binding.Register(app);
             MotionFramework_Tween_TweenNode_1_Vector2_Binding.Register(app);
             MotionFramework_Tween_ExecuteNode_Binding.Register(app);
             MotionFramework_Tween_SequenceNode_Binding.Register(app);
-            UnityEngine_UI_UISprite_Binding.Register(app);
+            MotionFramework_Window_UIRoot_Binding.Register(app);
+            MotionFramework_Tween_TweenMath_Binding.Register(app);
 
             ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
             __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector2));

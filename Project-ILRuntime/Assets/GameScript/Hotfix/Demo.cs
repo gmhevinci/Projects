@@ -23,8 +23,8 @@ namespace Hotfix
 			{
 				Attribute attribute1 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UILogin));
 				ILRManager.Instance.CacheHotfixAttribute(typeof(UILogin), attribute1);
-				Attribute attribute2 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UITown));
-				ILRManager.Instance.CacheHotfixAttribute(typeof(UITown), attribute2);
+				Attribute attribute2 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UIMain));
+				ILRManager.Instance.CacheHotfixAttribute(typeof(UIMain), attribute2);
 				Attribute attribute3 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UIMap));
 				ILRManager.Instance.CacheHotfixAttribute(typeof(UIMap), attribute3);
 			}
