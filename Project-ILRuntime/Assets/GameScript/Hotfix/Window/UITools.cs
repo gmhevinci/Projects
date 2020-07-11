@@ -10,11 +10,11 @@ namespace Hotfix
 		/// <summary>
 		/// 打开窗口
 		/// </summary>
-		public static void OpenWindow<T>(object userData = null) where T : UIWindow
+		public static UIWindow OpenWindow<T>(object userData = null) where T : UIWindow
 		{
 			string location = $"UIPanel/{typeof(T).Name}";
 			GameLog.Log($"Open : {typeof(T).Name}");
-			WindowManager.Instance.OpenWindow(typeof(T), location, userData);
+			return WindowManager.Instance.OpenWindow(typeof(T), location, userData);
 		}
 
 		/// <summary>

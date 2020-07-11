@@ -19,6 +19,7 @@ namespace Hotfix
 			FsmManager.Instance.Create();
 
 			// 缓存所有的特性
+			HotfixLog.Log("收集所有热更类的属性并缓存");
 			{
 				Attribute attribute1 = HotfixTypeHelper.GetAttribute<WindowAttribute>(typeof(UILogin));
 				ILRManager.Instance.CacheHotfixAttribute(typeof(UILogin), attribute1);
@@ -29,17 +30,18 @@ namespace Hotfix
 			}
 
 			// 开启协程加载资源
-			MotionEngine.StartCoroutine(LoadAssets());
+			MotionEngine.StartCoroutine(AsyncLoadAssets());
 		}
 
-		public IEnumerator LoadAssets()
+		public IEnumerator AsyncLoadAssets()
 		{
 			// 加载UIRoot
+			HotfixLog.Log("开始加载UIRoot");
 			var uiRoot = WindowManager.Instance.CreateUIRoot<CanvasRoot>("UIPanel/UIRoot");
 			yield return uiRoot;
 
 			// 加载窗口
-			HotfixLog.Log("开始加载窗口");
+			HotfixLog.Log("开始加载登录窗口");
 			yield return WindowManager.Instance.OpenWindow(typeof(UILogin), "UIPanel/UILogin");
 
 			// 加载模型
