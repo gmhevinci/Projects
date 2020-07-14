@@ -62,7 +62,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UnityEngine_Transform_Tween_Extension_Binding.Register(app);
             MotionFramework_Tween_TweenNode_1_Vector3_Binding.Register(app);
             MotionFramework_Tween_ParallelNode_Binding.Register(app);
-            MotionFramework_Window_UIWindow_Binding.Register(app);
             MotionFramework_Tween_TweenGroup_Binding.Register(app);
             UnityEngine_Color_Binding.Register(app);
             UnityEngine_UI_UnityEngine_UI_Image_Tween_Extension_Binding.Register(app);
