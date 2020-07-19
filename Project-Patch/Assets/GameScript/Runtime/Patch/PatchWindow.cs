@@ -136,8 +136,6 @@ public class PatchWindow
 				_tips.text = "正在准备下载列表";
 			else if (message.CurrentStates == EPatchStates.DownloadWebFiles)
 				_tips.text = "正在下载更新文件";
-			else if (message.CurrentStates == EPatchStates.DownloadWebPatchManifest)
-				_tips.text = "正在替换最新的清单";
 			else if (message.CurrentStates == EPatchStates.DownloadOver)
 				_tips.text = "欢迎来到游戏世界";
 		}

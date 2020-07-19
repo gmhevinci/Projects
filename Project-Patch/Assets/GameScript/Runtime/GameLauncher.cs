@@ -148,8 +148,14 @@ public class GameLauncher : MonoBehaviour
 		}
 		else
 		{
-			string myWebServer = "127.0.0.1";
-			string myCDNServer = "127.0.0.1";
+			// 远程服务器信息
+			string webServer = "http://127.0.0.1";
+			string cdnServer = "http://127.0.0.1";
+			string defaultWebServerIP = $"{webServer}/WEB/PC/GameVersion.php";
+			string defaultCDNServerIP = $"{cdnServer}/CDN/PC";
+			RemoteServerInfo serverInfo = new RemoteServerInfo(defaultWebServerIP, defaultCDNServerIP);
+			serverInfo.AddServerInfo(RuntimePlatform.Android, $"{webServer}/WEB/Android/GameVersion.php", $"{cdnServer}/CDN/Android");
+			serverInfo.AddServerInfo(RuntimePlatform.IPhonePlayer, $"{webServer}/WEB/Iphone/GameVersion.php", $"{cdnServer}/CDN/Iphone");
 
 			var patchCreateParam = new PatchManager.CreateParameters();
 			patchCreateParam.ServerID = PlayerPrefs.GetInt("SERVER_ID_KEY", 0);
@@ -157,14 +163,7 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.DeviceID = 0;
 			patchCreateParam.TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0);
 			patchCreateParam.CheckLevel = ECheckLevel.CheckSize;
-			patchCreateParam.WebServers = new Dictionary<RuntimePlatform, string>();
-			patchCreateParam.WebServers.Add(RuntimePlatform.Android, $"{myWebServer}/WEB/Android/GameVersion.php");
-			patchCreateParam.WebServers.Add(RuntimePlatform.IPhonePlayer, $"{myWebServer}/WEB/Iphone/GameVersion.php");
-			patchCreateParam.CDNServers = new Dictionary<RuntimePlatform, string>();
-			patchCreateParam.CDNServers.Add(RuntimePlatform.Android, $"{myCDNServer}/CDN/Android");
-			patchCreateParam.CDNServers.Add(RuntimePlatform.IPhonePlayer, $"{myCDNServer}/CDN/Iphone");
-			patchCreateParam.DefaultWebServerIP = $"{myWebServer}/WEB/PC/GameVersion.php";
-			patchCreateParam.DefaultCDNServerIP = $"{myCDNServer}/CDN/PC";
+			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
 
 			PatchManager patchManager = MotionEngine.CreateModule<PatchManager>(patchCreateParam);
@@ -180,7 +179,7 @@ public class GameLauncher : MonoBehaviour
 		resourceCreateParam.LocationRoot = GameDefine.AssetRootPath;
 		resourceCreateParam.SimulationOnEditor = SimulationOnEditor;
 		resourceCreateParam.BundleServices = bundleServices;
-		resourceCreateParam.DecryptServices = null;
+		resourceCreateParam.DecryptServices = new Decrypter();
 		resourceCreateParam.AutoReleaseInterval = 10f;
 		MotionEngine.CreateModule<ResourceManager>(resourceCreateParam);
 
@@ -216,7 +215,6 @@ public class GameLauncher : MonoBehaviour
 			{
 				PatchWindow.Instance.Destroy();
 				ResourceManager.Instance.ForceReleaseAll();
-				PatchManager.Instance.ReloadUnityManifest();
 
 				// 开始游戏
 				StartGame();
