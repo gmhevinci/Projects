@@ -46,7 +46,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 			var versionTxt = window.transform.BFSearch("Version").GetComponent<Text>();
 			if (MotionEngine.Contains(typeof(PatchManager)))
-				versionTxt.text = PatchManager.Instance.GetGameVersion();
+				versionTxt.text = PatchManager.Instance.GetRequestedGameVersion().ToString();
 			else
 				versionTxt.text = "NO Server";
 		}
