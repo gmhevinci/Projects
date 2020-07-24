@@ -197,7 +197,8 @@ public class ILRManager : ModuleSingleton<ILRManager>, IModule, IActivatorServic
 	/// </summary>
 	private TextAsset LoadAsset(string location)
 	{
-		string loadPath = ResourceManager.Instance.GetLoadPath(location);
+		var assetBundleInfo = ResourceManager.Instance.GetAssetBundleInfo(location);
+		string loadPath = assetBundleInfo.LocalPath;
 		if (_isSimulationOnEditor)
 		{
 #if UNITY_EDITOR
