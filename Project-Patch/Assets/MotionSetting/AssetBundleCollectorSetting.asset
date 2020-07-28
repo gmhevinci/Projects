@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc54f0173b27fb40aee29e7eb3364da, type: 3}
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
-  Elements:
+  Collectors:
   - CollectDirectory: Assets/GameRes
     CollectRule: 0
     CollectorName: LabelByFilePath
@@ -22,3 +22,4 @@ MonoBehaviour:
   - CollectDirectory: Assets/GameArt/Panel/Sprite
     CollectRule: 0
     CollectorName: LabelByFolderPath
+  DLCFiles: []

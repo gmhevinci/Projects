@@ -160,14 +160,15 @@ public class GameLauncher : MonoBehaviour
 			var patchCreateParam = new PatchManager.CreateParameters();
 			patchCreateParam.ServerID = PlayerPrefs.GetInt("SERVER_ID_KEY", 0);
 			patchCreateParam.ChannelID = 0;
-			patchCreateParam.DeviceID = 0;
+			patchCreateParam.DeviceUID = string.Empty;
 			patchCreateParam.TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0);
 			patchCreateParam.CheckLevel = ECheckLevel.CheckSize;
 			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
+			patchCreateParam.MaxNumberOnLoad = 4;
 
 			PatchManager patchManager = MotionEngine.CreateModule<PatchManager>(patchCreateParam);
-			yield return patchManager.InitializeAync();
+			yield return patchManager.InitializeAsync();
 			bundleServices = MotionEngine.GetModule<PatchManager>();
 
 			EventManager.Instance.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEventMessage);

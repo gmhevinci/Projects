@@ -130,7 +130,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.PatchStatesChange;		
 			if (message.CurrentStates == EPatchStates.RequestGameVersion)
 				_tips.text = "正在请求最新游戏版本";
-			else if (message.CurrentStates == EPatchStates.ParseWebPatchManifest)
+			else if (message.CurrentStates == EPatchStates.GetWebPatchManifest)
 				_tips.text = "正在分析新清单";
 			else if (message.CurrentStates == EPatchStates.GetDonwloadList)
 				_tips.text = "正在准备下载列表";
