@@ -147,18 +147,18 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	/// </summary>
 	private TextAsset LoadAsset(string location)
 	{
-		string loadPath = ResourceManager.Instance.GetLoadPath(location);
+		var info = ResourceManager.Instance.GetAssetBundleInfo(location);
 		if (_isSimulationOnEditor)
 		{
 #if UNITY_EDITOR
-			return UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(loadPath);
+			return UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(info.LocalPath);
 #else
 			throw new Exception($"AssetSystem simulation only support unity editor.");
 #endif
 		}
 		else
 		{
-			AssetBundle bundle = AssetBundle.LoadFromFile(loadPath);
+			AssetBundle bundle = AssetBundle.LoadFromFile(info.LocalPath);
 			if (bundle == null)
 				return null;
 
