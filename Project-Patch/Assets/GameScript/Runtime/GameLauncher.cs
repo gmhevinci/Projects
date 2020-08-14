@@ -162,7 +162,7 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.ChannelID = 0;
 			patchCreateParam.DeviceUID = string.Empty;
 			patchCreateParam.TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0);
-			patchCreateParam.CheckLevel = ECheckLevel.CheckSize;
+			patchCreateParam.VerifyLevel = EVerifyLevel.CRC32;
 			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
 			patchCreateParam.MaxNumberOnLoad = 4;

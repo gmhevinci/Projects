@@ -61,7 +61,7 @@ namespace Hotfix
 			TweenGrouper.Play(tween);
 			*/
 
-			SequenceNode tween = SequenceNode.Allocate();
+			ITweenChain tween = SequenceNode.Allocate();
 			tween.Append(_animRectTrans.TweenAnchoredPositionTo(0.5f, new Vector2(800, 0)).SetLerp(LerpBezierFun));
 			tween.Append(_animRectTrans.transform.TweenScaleTo(0.5f, Vector3.zero).SetEase(TweenEase.Bounce.EaseOut));
 			tween.Execute(() => { UITools.CloseWindow<UIMap>(); });
