@@ -36,6 +36,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 		GameObject uiRoot = rootHandle.InstantiateObject; // 实例化对象
 
 		// 加载窗口
+		GameLog.Log("Load LoginWindow");
 		GameObject window;
 		{
 			AssetReference windowRef = new AssetReference("UIPanel/LoginWindow");
@@ -76,6 +77,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 		// 加载模型
 		{
+			GameLog.Log("Load Monster");
 			AssetReference entityRef = new AssetReference("Entity/Monster/Boss");
 			var handle = entityRef.LoadAssetAsync<GameObject>();
 			yield return handle;
