@@ -65,13 +65,13 @@ public class CanvasWindowAdapter : CrossBindingAdaptor
 		{
 			mOnUpdate.Invoke();
 		}
-		public override void OnSortDepth(int depth)
+		protected override void OnSortDepth(int depth)
 		{
 			mOnSortDepth.Invoke(depth);
 			if (mOnSortDepth.ShouldInvokeBase())
 				base.OnSortDepth(depth);
 		}
-		public override void OnSetVisible(bool visible)
+		protected override void OnSetVisible(bool visible)
 		{
 			mOnSetVisible.Invoke(visible);
 			if (mOnSetVisible.ShouldInvokeBase())
