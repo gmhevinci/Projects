@@ -2,6 +2,11 @@
 public class ILRDefine
 {
 	/// <summary>
+	/// DLL编译的临时存储目录
+	/// </summary>
+	public const string StrAssemblyTemperDir = "Temp/Assembly";
+
+	/// <summary>
 	/// Unity编译的DLL存储目录
 	/// </summary>
 	public const string StrScriptAssembliesDir = "Library/ScriptAssemblies";
@@ -9,7 +14,7 @@ public class ILRDefine
 	/// <summary>
 	/// 我们设定的DLL存储目录
 	/// </summary>
-	public const string StrMyAssemblyFolderPath = GameDefine.AssetRootPath + "/Assembly";
+	public const string StrMyAssemblyDir = GameDefine.AssetRootPath + "/Assembly";
 
 	/// <summary>
 	/// 热更程序集的名称

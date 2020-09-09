@@ -18,7 +18,7 @@ public static class ILRuntimeCLRBinding
 
 		// 分析热更DLL来生成绑定代码
 		ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
-		string dllFilePath = $"{ILRDefine.StrMyAssemblyFolderPath}/{ILRDefine.StrMyHotfixDLLFileName}.bytes";
+		string dllFilePath = $"{ILRDefine.StrMyAssemblyDir}/{ILRDefine.StrMyHotfixDLLFileName}.bytes";
 		using (FileStream fs = new FileStream(dllFilePath, FileMode.Open, FileAccess.Read))
 		{
 			domain.LoadAssembly(fs);
