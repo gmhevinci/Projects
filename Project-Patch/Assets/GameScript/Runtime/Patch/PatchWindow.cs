@@ -56,7 +56,7 @@ public class PatchWindow
 		}
 	}
 
-	private AssetReference _assetRef;
+	private AssetOperationHandle _handle;
 	private EventGroup _eventGroup = new EventGroup();
 	private List<MessageBox> _msgBoxList = new List<MessageBox>();
 
@@ -75,14 +75,14 @@ public class PatchWindow
 	public IEnumerator InitializeAsync()
 	{
 		// 下载面板
-		_assetRef = new AssetReference("UIPanel/PatchWindow");
-		var handle = _assetRef.LoadAssetAsync<GameObject>();
-		yield return handle;
+		string location = "UIPanel/PatchWindow";
+		_handle = ResourceManager.Instance.LoadAssetAsync<GameObject>(location);
+		yield return _handle;
 
-		if(handle.AssetObject == null)
+		if(_handle.AssetObject == null)
 			throw new Exception("PatchWindow load failed.");
 
-		_uiRoot = handle.InstantiateObject;
+		_uiRoot = _handle.InstantiateObject;
 		_manifest = _uiRoot.GetComponent<UIManifest>();
 		_slider = _manifest.GetUIComponent<Slider>("PatchWindow/UIWindow/Slider");
 		_tips = _manifest.GetUIComponent<Text>("PatchWindow/UIWindow/Slider/txt_tips");
@@ -113,11 +113,7 @@ public class PatchWindow
 			_uiRoot = null;
 		}
 
-		if (_assetRef != null)
-		{
-			_assetRef.Release();
-			_assetRef = null;
-		}
+		_handle.Release();
 	}
 
 	/// <summary>

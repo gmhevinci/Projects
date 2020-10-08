@@ -181,7 +181,7 @@ public class GameLauncher : MonoBehaviour
 		resourceCreateParam.SimulationOnEditor = SimulationOnEditor;
 		resourceCreateParam.BundleServices = bundleServices;
 		resourceCreateParam.DecryptServices = new Decrypter();
-		resourceCreateParam.AutoReleaseInterval = 10f;
+		resourceCreateParam.AutoReleaseInterval = 1f;
 		MotionEngine.CreateModule<ResourceManager>(resourceCreateParam);
 
 		if (SkipCDN)
@@ -211,11 +211,11 @@ public class GameLauncher : MonoBehaviour
 			var message = msg as PatchEventMessageDefine.PatchStatesChange;
 
 			// 补丁下载完毕
-			// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源，还有重新载入Unity清单。
+			// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源。
 			if (message.CurrentStates == EPatchStates.DownloadOver)
 			{
 				PatchWindow.Instance.Destroy();
-				ResourceManager.Instance.ForceReleaseAll();
+				ResourceManager.Instance.UnloadAllAssets();
 
 				// 开始游戏
 				StartGame();

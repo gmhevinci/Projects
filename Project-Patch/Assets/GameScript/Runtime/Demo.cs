@@ -10,11 +10,19 @@ using MotionFramework.Patch;
 
 public class Demo : ModuleSingleton<Demo>, IModule
 {
+	private AssetOperationHandle _handle1;
+	private AssetOperationHandle _handle2;
+
 	void IModule.OnCreate(object createParam)
 	{
 	}
 	void IModule.OnUpdate()
 	{
+		if(Input.GetKeyDown(KeyCode.G))
+		{
+			ResourceManager.Instance.Release(_handle1);
+			ResourceManager.Instance.Release(_handle2);
+		}
 	}
 	void IModule.OnGUI()
 	{
@@ -30,8 +38,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 	{
 		// 加载UI面板
 		GameLog.Log("Load UIRoot.");
-		AssetReference rootRef = new AssetReference("UIPanel/UIRoot");
-		var rootHandle = rootRef.LoadAssetAsync<GameObject>();
+		var rootHandle = ResourceManager.Instance.LoadAssetAsync<GameObject>("UIPanel/UIRoot");
 		yield return rootHandle;	
 		GameObject uiRoot = rootHandle.InstantiateObject; // 实例化对象
 
@@ -39,8 +46,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 		GameLog.Log("Load LoginWindow");
 		GameObject window;
 		{
-			AssetReference windowRef = new AssetReference("UIPanel/LoginWindow");
-			var handle = windowRef.LoadAssetAsync<GameObject>();
+			var handle = ResourceManager.Instance.LoadAssetAsync<GameObject>("UIPanel/LoginWindow");
 			yield return handle;
 			window = handle.InstantiateObject; // 实例化对象
 			window.transform.SetParent(uiRoot.transform, false);
@@ -55,14 +61,13 @@ public class Demo : ModuleSingleton<Demo>, IModule
 		// 加载资源包
 		{
 			GameLog.Log("Load texture package");
-			AssetReference packRef = new AssetReference("UITexture/Foods");
-			var handle1 = packRef.LoadAssetAsync<Texture>("eggs");
-			yield return handle1;
-			Texture tex1 = handle1.AssetObject as Texture;
+			_handle1 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Foods/eggs");
+			yield return _handle1;
+			Texture tex1 = _handle1.AssetObject as Texture;
 
-			var handle2 = packRef.LoadAssetAsync<Texture>("apple");
-			yield return handle2;
-			Texture tex2 = handle2.AssetObject as Texture;
+			_handle2 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Foods/apple");
+			yield return _handle2;
+			Texture tex2 = _handle2.AssetObject as Texture;
 
 			// 设置纹理1
 			RawImage img1 = window.transform.BFSearch("FoodImg1").GetComponent<RawImage>();	
@@ -78,8 +83,7 @@ public class Demo : ModuleSingleton<Demo>, IModule
 		// 加载模型
 		{
 			GameLog.Log("Load Monster");
-			AssetReference entityRef = new AssetReference("Entity/Monster/Boss");
-			var handle = entityRef.LoadAssetAsync<GameObject>();
+			var handle = ResourceManager.Instance.LoadAssetAsync<GameObject>("Entity/Monster/Boss");
 			yield return handle;
 			var sphere = handle.InstantiateObject; // 实例化对象
 			sphere.transform.position = new Vector3(5f, 0, 0);
