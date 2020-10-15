@@ -46,8 +46,7 @@ namespace Hotfix
 
 			// 加载模型
 			HotfixLog.Log("开始加载模型");
-			AssetReference assetRef = new AssetReference("Entity/Sphere");
-			var handle = assetRef.LoadAssetAsync<GameObject>();
+			var handle = ResourceManager.Instance.LoadAssetAsync<GameObject>("Entity/Sphere");
 			yield return handle;
 
 			var sphere = handle.InstantiateObject;

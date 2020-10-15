@@ -11,8 +11,7 @@ function Demo.Start()
 	print("Hello Lua World")
 
 	--加载资源
-	local ref = MF.Resource.AssetReference("Entity/Sphere")
-	local handle = ref:LoadAssetAsync(typeof(UE.GameObject))
+	local handle = MF.Resource.ResourceManager.Instance:LoadAssetAsync(typeof(UE.GameObject), "Entity/Sphere")
 	handle:Completed("+", function(handle)
 		local go = handle.InstantiateObject
 		go.transform.position = UE.Vector3(0,0,0)
