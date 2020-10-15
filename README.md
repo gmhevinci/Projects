@@ -6,6 +6,3 @@
 
 ## Project-Patch
 资源补丁热更的示例工程
-
-## Project-FairyGUI
-FairyGUI接入的示例工程
