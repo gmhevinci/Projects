@@ -47,6 +47,9 @@ public class GameLauncher : MonoBehaviour
 		SimulationOnEditor = false;
 #endif
 
+		if (SimulationOnEditor)
+			SkipCDN = true;
+
 		// 初始化应用
 		InitAppliaction();
 
