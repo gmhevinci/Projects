@@ -6,6 +6,7 @@ using MotionFramework;
 using MotionFramework.Resource;
 using MotionFramework.Config;
 using MotionFramework.Window;
+using MotionFramework.Event;
 
 namespace Hotfix
 {
@@ -31,6 +32,18 @@ namespace Hotfix
 
 			// 开启协程加载资源
 			MotionEngine.StartCoroutine(AsyncLoadAssets());
+
+			// 测试热更事件
+			HotfixEventManager.Instance.AddListener<HotfixEventDefine.ClickSkill1Event>(OnHandleEventMessage);
+			HotfixEventManager.Instance.AddListener<HotfixEventDefine.ClickSkill2Event>(OnHandleEventMessage);
+			HotfixEventManager.Instance.AddListener<HotfixEventDefine.ClickSkill3Event>(OnHandleEventMessage);
+			HotfixEventManager.Instance.AddListener<HotfixEventDefine.ClickSkill4Event>(OnHandleEventMessage);
+			HotfixEventManager.Instance.AddListener<HotfixEventDefine.ClickSkill5Event>(OnHandleEventMessage);
+		}
+		public void Update()
+		{
+			HotfixNetManager.Instance.Update();
+			FsmManager.Instance.Update();
 		}
 
 		public IEnumerator AsyncLoadAssets()
@@ -64,10 +77,9 @@ namespace Hotfix
 			HotfixLog.Log($"表格数据：{table.Model}");
 		}
 
-		public void Update()
+		private void OnHandleEventMessage(IEventMessage msg)
 		{
-			HotfixNetManager.Instance.Update();
-			FsmManager.Instance.Update();
+			Debug.Log($"Click Skill = {msg.GetType()}");
 		}
 	}
 }

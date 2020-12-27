@@ -38,22 +38,27 @@ namespace Hotfix
 		private void OnClickSkill1()
 		{
 			_photo.SpriteName = "Photo1";
+			HotfixEventManager.Instance.SendMessage(new HotfixEventDefine.ClickSkill1Event());
 		}
 		private void OnClickSkill2()
 		{
 			_photo.SpriteName = "Photo2";
+			HotfixEventManager.Instance.SendMessage(new HotfixEventDefine.ClickSkill2Event());
 		}
 		private void OnClickSkill3()
 		{
 			_photo.SpriteName = "Photo3";
+			HotfixEventManager.Instance.SendMessage(new HotfixEventDefine.ClickSkill3Event());
 		}
 		private void OnClickSkill4()
 		{
 			_photo.SpriteName = "Photo4";
+			HotfixEventManager.Instance.SendMessage(new HotfixEventDefine.ClickSkill4Event());
 		}
 		private void OnClickSkill5()
 		{
 			_photo.SpriteName = "Photo5";
+			HotfixEventManager.Instance.SendMessage(new HotfixEventDefine.ClickSkill5Event());
 		}
 		private void OnClickMap()
 		{

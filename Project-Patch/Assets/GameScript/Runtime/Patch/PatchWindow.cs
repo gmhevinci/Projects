@@ -123,7 +123,7 @@ public class PatchWindow
 	{
 		if (msg is PatchEventMessageDefine.PatchStatesChange)
 		{
-			var message = msg as PatchEventMessageDefine.PatchStatesChange;		
+			var message = msg as PatchEventMessageDefine.PatchStatesChange;
 			if (message.CurrentStates == EPatchStates.RequestGameVersion)
 				_tips.text = "正在请求最新游戏版本";
 			else if (message.CurrentStates == EPatchStates.GetWebPatchManifest)
@@ -133,6 +133,8 @@ public class PatchWindow
 			else if (message.CurrentStates == EPatchStates.DownloadWebFiles)
 				_tips.text = "正在下载更新文件";
 			else if (message.CurrentStates == EPatchStates.DownloadOver)
+				_tips.text = "下载更新文件完毕";
+			else if (message.CurrentStates == EPatchStates.PatchDone)
 				_tips.text = "欢迎来到游戏世界";
 		}
 
@@ -153,7 +155,9 @@ public class PatchWindow
 			{
 				SendOperationEvent(EPatchOperation.BeginingDownloadWebFiles);
 			};
-			string totalSizeMB = (message.TotalSizeBytes / 1048576f).ToString("f1");
+			float sizeMB = message.TotalSizeBytes / 1048576f;
+			sizeMB = Mathf.Clamp(sizeMB, 0.1f, float.MaxValue);
+			string totalSizeMB = sizeMB.ToString("f1");
 			ShowMessageBox($"发现新版本需要更新 : 一共{message.TotalCount}个文件，总大小{totalSizeMB}MB", callback);
 		}
 
