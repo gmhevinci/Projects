@@ -10,19 +10,11 @@ using MotionFramework.Patch;
 
 public class Demo : ModuleSingleton<Demo>, IModule
 {
-	private AssetOperationHandle _handle1;
-	private AssetOperationHandle _handle2;
-
 	void IModule.OnCreate(object createParam)
 	{
 	}
 	void IModule.OnUpdate()
 	{
-		if(Input.GetKeyDown(KeyCode.G))
-		{
-			ResourceManager.Instance.Release(_handle1);
-			ResourceManager.Instance.Release(_handle2);
-		}
 	}
 	void IModule.OnGUI()
 	{
@@ -36,14 +28,10 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 	private IEnumerator LoadAssets()
 	{
-		// 加载UI面板
-		GameLog.Log("Load UIRoot.");
-		var rootHandle = ResourceManager.Instance.LoadAssetAsync<GameObject>("UIPanel/UIRoot");
-		yield return rootHandle;	
-		GameObject uiRoot = rootHandle.InstantiateObject; // 实例化对象
+		GameObject uiRoot = GameObject.Find("UIRoot");
 
 		// 加载窗口
-		GameLog.Log("Load LoginWindow");
+		GameLog.Log("Load Window");
 		GameObject window;
 		{
 			var handle = ResourceManager.Instance.LoadAssetAsync<GameObject>("UIPanel/LoginWindow");
@@ -53,30 +41,41 @@ public class Demo : ModuleSingleton<Demo>, IModule
 
 			var versionTxt = window.transform.BFSearch("Version").GetComponent<Text>();
 			if (MotionEngine.Contains(typeof(PatchManager)))
-				versionTxt.text = PatchManager.Instance.GetRequestedGameVersion().ToString();
+				versionTxt.text = $"Version : {PatchManager.Instance.GetRequestedGameVersion()}";
 			else
 				versionTxt.text = "NO Server";
 		}
 
-		// 加载资源包
+		// 加载背景图片
+		GameLog.Log("Load Texture");
+		{		
+			var handle1 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Background/bg.png");
+			yield return handle1;
+			var bg1 = window.transform.BFSearch("Bg1").GetComponent<RawImage>();
+			bg1.texture = handle1.AssetObject as Texture;
+
+			var handle2 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Background/bg.jpg");
+			yield return handle2;
+			var bg2 = window.transform.BFSearch("Bg2").GetComponent<RawImage>();
+			bg2.texture = handle2.AssetObject as Texture;
+		}
+
+		// 加载精灵图片
 		{
-			GameLog.Log("Load texture package");
-			_handle1 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Foods/eggs");
-			yield return _handle1;
-			Texture tex1 = _handle1.AssetObject as Texture;
+			GameLog.Log("Load Sprite");
 
-			_handle2 = ResourceManager.Instance.LoadAssetAsync<Texture>("UITexture/Foods/apple");
-			yield return _handle2;
-			Texture tex2 = _handle2.AssetObject as Texture;
-
-			// 设置纹理1
-			RawImage img1 = window.transform.BFSearch("FoodImg1").GetComponent<RawImage>();	
-			img1.texture = tex1;
+			// 设置精灵1
+			var handle1 = ResourceManager.Instance.LoadAssetAsync<Sprite>("UITexture/Foods/eggs");
+			yield return handle1;
+			Image img1 = window.transform.BFSearch("FoodImg1").GetComponent<Image>();
+			img1.sprite = handle1.AssetObject as Sprite;
 			img1.SetNativeSize();
 
-			// 设置纹理2
-			RawImage img2 = window.transform.BFSearch("FoodImg2").GetComponent<RawImage>();
-			img2.texture = tex2;
+			// 设置精灵2
+			var handle2 = ResourceManager.Instance.LoadAssetAsync<Sprite>("UITexture/Foods/apple");
+			yield return handle2;
+			Image img2 = window.transform.BFSearch("FoodImg2").GetComponent<Image>();
+			img2.sprite = handle2.AssetObject as Sprite;
 			img2.SetNativeSize();
 		}
 
@@ -88,6 +87,18 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			var sphere = handle.InstantiateObject; // 实例化对象
 			sphere.transform.position = new Vector3(5f, 0, 0);
 			sphere.transform.localScale = sphere.transform.localScale * 2f;
+		}
+
+		// 加载LUA文件
+		GameLog.Log("Load LUA");
+		{
+			var handle1 = ResourceManager.Instance.LoadAssetSync<TextAsset>("Lua/LuaTest1.lua");
+			TextAsset lua1 = handle1.AssetObject as TextAsset;
+			Debug.Log(lua1.text);
+
+			var handle2 = ResourceManager.Instance.LoadAssetSync<TextAsset>("Lua/LuaTest2.lua.txt");
+			TextAsset lua2 = handle2.AssetObject as TextAsset;
+			Debug.Log(lua2.text);
 		}
 	}
 }
