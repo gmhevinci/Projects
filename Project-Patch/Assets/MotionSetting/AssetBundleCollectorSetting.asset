@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc54f0173b27fb40aee29e7eb3364da, type: 3}
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
+  IsCollectAllShaders: 0
+  ShadersBundleName: myshaders
   Collectors:
   - CollectDirectory: Assets/GameRes/Entity/
     LabelClassName: LabelByFilePath
@@ -26,7 +28,7 @@ MonoBehaviour:
     LabelClassName: LabelByFilePath
     FilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UITexture/Foods/
-    LabelClassName: LabelByFilePath
+    LabelClassName: LabelByFolderPath
     FilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UITexture/Background/
     LabelClassName: LabelByFolderPath
