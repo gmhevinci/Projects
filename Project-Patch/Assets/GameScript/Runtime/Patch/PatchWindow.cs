@@ -164,7 +164,7 @@ public class PatchWindow
 		else if (msg is PatchEventMessageDefine.DownloadFilesProgress)
 		{
 			var message = msg as PatchEventMessageDefine.DownloadFilesProgress;
-			_slider.value = message.CurrentDownloadCount / message.TotalDownloadCount;
+			_slider.value = (float)message.CurrentDownloadCount / message.TotalDownloadCount;
 			string currentSizeMB = (message.CurrentDownloadSizeBytes / 1048576f).ToString("f1");
 			string totalSizeMB = (message.TotalDownloadSizeBytes / 1048576f).ToString("f1");
 			_tips.text = $"{message.CurrentDownloadCount}/{message.TotalDownloadCount} {currentSizeMB}MB/{totalSizeMB}MB";

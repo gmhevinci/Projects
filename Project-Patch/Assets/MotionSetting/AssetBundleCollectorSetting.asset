@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   IsCollectAllShaders: 0
-  ShadersBundleName: myshaders
+  ShadersBundleName: shaders
   Collectors:
-  - CollectDirectory: Assets/GameRes/Entity/
-    LabelClassName: LabelByFilePath
-    FilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/Lua/
-    LabelClassName: LabelByFilePath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFilePath
+    SearchFilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UIAtlas/
-    LabelClassName: LabelByFilePath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFilePath
+    SearchFilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UIPanel/
-    LabelClassName: LabelByFilePath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFilePath
+    SearchFilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UITexture/Foods/
-    LabelClassName: LabelByFolderPath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFolderPath
+    SearchFilterClassName: SearchAll
   - CollectDirectory: Assets/GameRes/UITexture/Background/
-    LabelClassName: LabelByFolderPath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFilePath
+    SearchFilterClassName: SearchAll
+  - CollectDirectory: Assets/GameRes/Entity/
+    BundleLabelClassName: LabelByFilePath
+    SearchFilterClassName: SearchAll
   - CollectDirectory: Assets/GameArt/Panel/Sprite/
-    LabelClassName: LabelByFolderPath
-    FilterClassName: SearchAll
+    BundleLabelClassName: LabelByFolderPath
+    SearchFilterClassName: SearchAll
   DLCFiles: []

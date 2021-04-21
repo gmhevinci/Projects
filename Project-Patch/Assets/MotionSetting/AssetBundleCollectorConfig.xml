@@ -1,0 +1,14 @@
+<root>
+	
+	<!--注释-->
+	<Collect Directory="Assets/GameRes/Lua/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+	<Collect Directory="Assets/GameRes/UIAtlas/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+	<Collect Directory="Assets/GameRes/UIPanel/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+	<Collect Directory="Assets/GameRes/UITexture/Foods/" LabelClassName="LabelByFolderPath" FilterClassName="SearchAll"/>
+	<Collect Directory="Assets/GameRes/UITexture/Background/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+	<Collect Directory="Assets/GameRes/Entity/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+
+	<!--精灵-->
+	<Collect Directory="Assets/GameArt/Panel/Sprite/" LabelClassName="LabelByFolderPath" FilterClassName="SearchAll"/>
+	
+</root>
