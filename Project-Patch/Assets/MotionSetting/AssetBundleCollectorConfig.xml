@@ -1,14 +1,13 @@
 <root>
 	
 	<!--注释-->
-	<Collect Directory="Assets/GameRes/Lua/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
-	<Collect Directory="Assets/GameRes/UIAtlas/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
-	<Collect Directory="Assets/GameRes/UIPanel/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
-	<Collect Directory="Assets/GameRes/UITexture/Foods/" LabelClassName="LabelByFolderPath" FilterClassName="SearchAll"/>
-	<Collect Directory="Assets/GameRes/UITexture/Background/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
-	<Collect Directory="Assets/GameRes/Entity/" LabelClassName="LabelByFilePath" FilterClassName="SearchAll"/>
+	<Collector Directory="Assets/GameRes/Lua/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll"/>
+	<Collector Directory="Assets/GameRes/UIAtlas/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll"/>
+	<Collector Directory="Assets/GameRes/UIPanel/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll"/>
+	<Collector Directory="Assets/GameRes/UITexture/" PackRuleClass="PackDirectory" FilterRuleClass="CollectAll"/>
+	<Collector Directory="Assets/GameRes/Entity/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll"/>
 
 	<!--精灵-->
-	<Collect Directory="Assets/GameArt/Panel/Sprite/" LabelClassName="LabelByFolderPath" FilterClassName="SearchAll"/>
+	<Collector Directory="Assets/GameArt/Panel/Sprite/" PackRuleClass="PackDirectory" FilterRuleClass="CollectAll"/>
 	
 </root>

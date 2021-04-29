@@ -9,7 +9,7 @@ public class AssetEncrypter : IAssetEncrypter
 	bool IAssetEncrypter.Check(string filePath)
 	{
 		// 注意：我们对Entity文件夹内的资源进行了加密
-		return filePath.Contains("/entity/");
+		return filePath.Contains("/Lua/");
 	}
 
 	byte[] IAssetEncrypter.Encrypt(byte[] fileData)

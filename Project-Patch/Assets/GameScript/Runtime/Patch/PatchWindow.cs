@@ -57,8 +57,8 @@ public class PatchWindow
 	}
 
 	private AssetOperationHandle _handle;
-	private EventGroup _eventGroup = new EventGroup();
-	private List<MessageBox> _msgBoxList = new List<MessageBox>();
+	private readonly EventGroup _eventGroup = new EventGroup();
+	private readonly List<MessageBox> _msgBoxList = new List<MessageBox>();
 
 	// UGUI相关
 	private GameObject _uiRoot;
