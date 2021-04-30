@@ -18,22 +18,25 @@ MonoBehaviour:
   - CollectDirectory: Assets/GameRes/Lua/
     PackRuleClassName: PackExplicit
     FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
   - CollectDirectory: Assets/GameRes/UIAtlas/
     PackRuleClassName: PackExplicit
     FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
   - CollectDirectory: Assets/GameRes/UIPanel/
     PackRuleClassName: PackExplicit
     FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
   - CollectDirectory: Assets/GameRes/UITexture/
     PackRuleClassName: PackDirectory
     FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
   - CollectDirectory: Assets/GameRes/Entity/
     PackRuleClassName: PackExplicit
     FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
   - CollectDirectory: Assets/GameArt/Panel/Sprite/
     PackRuleClassName: PackDirectory
     FilterRuleClassName: CollectAll
-  - CollectDirectory: Assets/GameRes/Font/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 1
   DLCFiles: []
