@@ -1,13 +1,13 @@
 <root>
 	
 	<!--注释-->
-	<Collector Directory="Assets/GameRes/Lua/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll" DontWriteAssetPath="0"/>
-	<Collector Directory="Assets/GameRes/UIAtlas/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll" DontWriteAssetPath="0"/>
-	<Collector Directory="Assets/GameRes/UIPanel/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll" DontWriteAssetPath="0"/>
-	<Collector Directory="Assets/GameRes/UITexture/" PackRuleClass="PackDirectory" FilterRuleClass="CollectAll" DontWriteAssetPath="0"/>
-	<Collector Directory="Assets/GameRes/Entity/" PackRuleClass="PackExplicit" FilterRuleClass="CollectAll" DontWriteAssetPath="0"/>
+	<Collector Directory="Assets/GameRes/Lua/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
+	<Collector Directory="Assets/GameRes/UIAtlas/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
+	<Collector Directory="Assets/GameRes/UIPanel/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
+	<Collector Directory="Assets/GameRes/UITexture/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="0"/>
+	<Collector Directory="Assets/GameRes/Entity/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
 
 	<!--精灵-->
-	<Collector Directory="Assets/GameArt/Panel/Sprite/" PackRuleClass="PackDirectory" FilterRuleClass="CollectAll" DontWriteAssetPath="1"/>
+	<Collector Directory="Assets/GameArt/Panel/Sprite/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="1"/>
 	
 </root>
