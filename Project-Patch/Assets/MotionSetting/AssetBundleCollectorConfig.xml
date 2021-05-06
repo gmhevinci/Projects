@@ -6,7 +6,8 @@
 	<Collector Directory="Assets/GameRes/UIPanel/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
 	<Collector Directory="Assets/GameRes/UITexture/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="0"/>
 	<Collector Directory="Assets/GameRes/Entity/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
-
+	<Collector Directory="Assets/GameRes/Scene/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0"/>
+	
 	<!--精灵-->
 	<Collector Directory="Assets/GameArt/Panel/Sprite/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="1"/>
 	
