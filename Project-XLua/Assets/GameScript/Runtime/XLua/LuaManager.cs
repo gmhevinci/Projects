@@ -12,11 +12,6 @@ using MotionFramework.Patch;
 
 public class LuaManager : ModuleSingleton<LuaManager>, IModule
 {
-	public class CreateParameters
-	{
-		public bool SimulationOnEditor;
-	}
-
 	[CSharpCallLua]
 	public delegate string LanguageDelegate(string key);
 	[CSharpCallLua]
@@ -31,13 +26,9 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	private Action _funUpdate;
 	private LanguageDelegate _funLanguage;
 	private NetMessageDelegate _funNetMessage;
-	private bool _isSimulationOnEditor;
 
 	void IModule.OnCreate(object createParam)
 	{
-		CreateParameters param = createParam as CreateParameters;
-		_isSimulationOnEditor = param.SimulationOnEditor;
-
 		_luaEnv.AddLoader(CustomLoaderMethod);
 		_luaEnv.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
 		_luaEnv.AddBuildin("lpeg", XLua.LuaDLL.Lua.LoadLpeg);
@@ -147,25 +138,7 @@ public class LuaManager : ModuleSingleton<LuaManager>, IModule
 	/// </summary>
 	private TextAsset LoadAsset(string location)
 	{
-		var info = ResourceManager.Instance.GetAssetBundleInfo(location);
-		if (_isSimulationOnEditor)
-		{
-#if UNITY_EDITOR
-			return UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(info.LocalPath);
-#else
-			throw new Exception($"AssetSystem simulation only support unity editor.");
-#endif
-		}
-		else
-		{
-			AssetBundle bundle = AssetBundle.LoadFromFile(info.LocalPath);
-			if (bundle == null)
-				return null;
-
-			string fileName = Path.GetFileName(location);
-			var result = bundle.LoadAsset<TextAsset>(fileName);
-			bundle.Unload(false); // 注意：这里要卸载AssetBundle
-			return result;
-		}
+		var handle =  ResourceManager.Instance.LoadAssetSync<TextAsset>(location);
+		return handle.AssetObject as TextAsset;
 	}
 }

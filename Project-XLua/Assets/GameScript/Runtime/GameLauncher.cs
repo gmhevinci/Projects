@@ -116,9 +116,7 @@ public class GameLauncher : MonoBehaviour
 		MotionEngine.CreateModule<SceneManager>();
 
 		// 直接进入游戏
-		var luaCreateParam = new LuaManager.CreateParameters();
-		luaCreateParam.SimulationOnEditor = SimulationOnEditor;
-		MotionEngine.CreateModule<LuaManager>(luaCreateParam);
+		MotionEngine.CreateModule<LuaManager>();
 		LuaManager.Instance.StartGame();
 	}
 }
