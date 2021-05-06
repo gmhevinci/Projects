@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc54f0173b27fb40aee29e7eb3364da, type: 3}
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
+  IsCollectAllShaders: 0
+  ShadersBundleName: shaders
   Collectors:
-  - CollectDirectory: Assets/GameRes
-    CollectRule: 0
-    CollectorName: LabelByFilePath
-  - CollectDirectory: Assets/GameArt/UISprite
-    CollectRule: 0
-    CollectorName: LabelByFolderPath
+  - CollectDirectory: Assets/GameRes/
+    PackRuleClassName: PackExplicit
+    FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 0
+  - CollectDirectory: Assets/GameArt/UISprite/
+    PackRuleClassName: PackDirectory
+    FilterRuleClassName: CollectAll
+    DontWriteAssetPath: 1
   DLCFiles: []
