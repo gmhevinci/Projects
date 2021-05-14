@@ -39,11 +39,18 @@ public class Demo : ModuleSingleton<Demo>, IModule
 			window = handle.InstantiateObject; // 实例化对象
 			window.transform.SetParent(uiRoot.transform, false);
 
-			var versionTxt = window.transform.BFSearch("Version").GetComponent<Text>();
+			var gameVersionTxt = window.transform.BFSearch("GameVersion").GetComponent<Text>();
+			var resVersionTxt = window.transform.BFSearch("ResVersion").GetComponent<Text>();
 			if (MotionEngine.Contains(typeof(PatchManager)))
-				versionTxt.text = $"Version : {PatchManager.Instance.GetRequestedGameVersion()}";
+			{
+				gameVersionTxt.text = $"Version : {PatchManager.Instance.GetRequestedGameVersion()}";
+				resVersionTxt.text = $"Res : {PatchManager.Instance.GetRequestedResourceVersion()}";
+			}
 			else
-				versionTxt.text = "NO Server";
+			{
+				gameVersionTxt.text = "NO Server";
+				resVersionTxt.text = string.Empty;
+			}
 		}
 
 		// 加载背景图片

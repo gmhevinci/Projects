@@ -28,14 +28,10 @@ public class GameLauncher : MonoBehaviour
 		KR,
 	}
 
-	/// <summary>
-	/// 在编辑器下模拟运行
-	/// </summary>
+	[Tooltip("在编辑器下模拟运行")]
 	public bool SimulationOnEditor = false;
 
-	/// <summary>
-	/// 是否跳过CDN服务器
-	/// </summary>
+	[Tooltip("是否跳过CDN服务器")]
 	public bool SkipCDN = false;
 
 	public EQuality Quality = EQuality.Default;
@@ -143,7 +139,7 @@ public class GameLauncher : MonoBehaviour
 		}
 
 		// 资源服务接口
-		IBundleServices bundleServices = null;
+		IBundleServices bundleServices;
 		if (SkipCDN)
 		{
 			var localBundleServices = new LocalBundleServices(variantRules);
@@ -169,6 +165,7 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.VerifyLevel = EVerifyLevel.Size;
 			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
+			patchCreateParam.AutoDownloadDLC = new string[] { "entity" };
 			patchCreateParam.MaxNumberOnLoad = 4;
 
 			PatchManager patchManager = MotionEngine.CreateModule<PatchManager>(patchCreateParam);

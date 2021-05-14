@@ -16,31 +16,37 @@ MonoBehaviour:
   ShadersBundleName: shaders
   Collectors:
   - CollectDirectory: Assets/GameRes/Lua/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/UIAtlas/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/UIPanel/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/UITexture/
-    PackRuleClassName: PackDirectory
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackDirectory
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/Entity/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: entity
   - CollectDirectory: Assets/GameRes/Scene/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameArt/Panel/Sprite/
-    PackRuleClassName: PackDirectory
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackDirectory
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 1
-  DLCFiles: []
+    AssetTags: 

@@ -91,7 +91,7 @@ public class PatchWindow
 		_messageBoxObj.SetActive(false);
 
 		_eventGroup.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.FoundForceInstallAPP>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.FoundNewApp>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.FoundUpdateFiles>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.DownloadFilesProgress>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionRequestFailed>(OnHandleEvent);
@@ -138,9 +138,9 @@ public class PatchWindow
 				_tips.text = "欢迎来到游戏世界";
 		}
 
-		else if (msg is PatchEventMessageDefine.FoundForceInstallAPP)
+		else if (msg is PatchEventMessageDefine.FoundNewApp)
 		{
-			var message = msg as PatchEventMessageDefine.FoundForceInstallAPP;
+			var message = msg as PatchEventMessageDefine.FoundNewApp;
 			System.Action callback = () =>
 			{
 				Application.OpenURL(message.InstallURL);
