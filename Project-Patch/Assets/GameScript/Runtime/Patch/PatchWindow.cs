@@ -19,19 +19,47 @@ public class PatchWindow
 	{
 		private GameObject _cloneObject;
 		private Text _content;
+		private Button _btnYes;
+		private Button _btnNo;
 		private System.Action _clickYes;
+		private System.Action _clickNo;
+
+		public bool ActiveSelf
+		{
+			get
+			{
+				return _cloneObject.activeSelf;
+			}
+		}
 
 		public void Create(GameObject cloneObject)
 		{
 			_cloneObject = cloneObject;
 			_content = cloneObject.transform.BFSearch("txt_content").GetComponent<Text>();
-			var btnYes = cloneObject.transform.BFSearch("btn_yes").GetComponent<Button>();
-			btnYes.onClick.AddListener(OnClickYes);
+			_btnYes = cloneObject.transform.BFSearch("btn_yes").GetComponent<Button>();
+			_btnYes.onClick.AddListener(OnClickYes);
+			_btnNo = cloneObject.transform.BFSearch("btn_no").GetComponent<Button>();
+			_btnNo.onClick.AddListener(OnClickNo);
 		}
 		public void Show(string content, System.Action clickYes)
 		{
 			_content.text = content;
+			var rectTrans = _btnYes.transform as RectTransform;
+			rectTrans.anchoredPosition = new Vector2(0, -126);
+			_btnNo.gameObject.SetActive(false);
 			_clickYes = clickYes;
+			_clickNo = null;
+			_cloneObject.SetActive(true);
+			_cloneObject.transform.SetAsLastSibling();
+		}
+		public void Show(string content, System.Action clickYes, System.Action clickNo)
+		{
+			_content.text = content;
+			var rectTrans = _btnYes.transform as RectTransform;
+			rectTrans.anchoredPosition = new Vector2(-178, -126);
+			_btnNo.gameObject.SetActive(true);
+			_clickYes = clickYes;
+			_clickNo = clickNo;
 			_cloneObject.SetActive(true);
 			_cloneObject.transform.SetAsLastSibling();
 		}
@@ -41,20 +69,18 @@ public class PatchWindow
 			_clickYes = null;
 			_cloneObject.SetActive(false);
 		}
-		public bool ActiveSelf
-		{
-			get
-			{
-				return _cloneObject.activeSelf;
-			}
-		}
-
 		private void OnClickYes()
 		{
 			_clickYes?.Invoke();
 			Hide();
 		}
+		private void OnClickNo()
+		{
+			_clickNo?.Invoke();
+			Hide();
+		}
 	}
+
 
 	private AssetOperationHandle _handle;
 	private readonly EventGroup _eventGroup = new EventGroup();
@@ -63,7 +89,7 @@ public class PatchWindow
 	// UGUI相关
 	private GameObject _uiRoot;
 	private UIManifest _manifest;
-	private GameObject _messageBoxObj;
+	private GameObject _messageBoxYesObj;
 	private Slider _slider;
 	private Text _tips;
 
@@ -79,7 +105,7 @@ public class PatchWindow
 		_handle = ResourceManager.Instance.LoadAssetAsync<GameObject>(location);
 		yield return _handle;
 
-		if(_handle.AssetObject == null)
+		if (_handle.AssetObject == null)
 			throw new Exception("PatchWindow load failed.");
 
 		_uiRoot = _handle.InstantiateObject;
@@ -87,8 +113,8 @@ public class PatchWindow
 		_slider = _manifest.GetUIComponent<Slider>("PatchWindow/UIWindow/Slider");
 		_tips = _manifest.GetUIComponent<Text>("PatchWindow/UIWindow/Slider/txt_tips");
 		_tips.text = "正在准备游戏世界......";
-		_messageBoxObj = _manifest.GetUIElement("PatchWindow/UIWindow/MessgeBox").gameObject;
-		_messageBoxObj.SetActive(false);
+		_messageBoxYesObj = _manifest.GetUIElement("PatchWindow/UIWindow/MessgeBox").gameObject;
+		_messageBoxYesObj.SetActive(false);
 
 		_eventGroup.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.FoundNewApp>(OnHandleEvent);
@@ -126,8 +152,8 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.PatchStatesChange;
 			if (message.CurrentStates == EPatchStates.RequestGameVersion)
 				_tips.text = "正在请求最新游戏版本";
-			else if (message.CurrentStates == EPatchStates.GetWebPatchManifest)
-				_tips.text = "正在分析新清单";
+			else if (message.CurrentStates == EPatchStates.DownloadPatchManifest)
+				_tips.text = "正在下载新的补丁清单";
 			else if (message.CurrentStates == EPatchStates.GetDonwloadList)
 				_tips.text = "正在准备下载列表";
 			else if (message.CurrentStates == EPatchStates.DownloadWebFiles)
@@ -136,16 +162,31 @@ public class PatchWindow
 				_tips.text = "下载更新文件完毕";
 			else if (message.CurrentStates == EPatchStates.PatchDone)
 				_tips.text = "欢迎来到游戏世界";
+			else
+				throw new NotImplementedException(message.CurrentStates.ToString());
 		}
 
 		else if (msg is PatchEventMessageDefine.FoundNewApp)
 		{
 			var message = msg as PatchEventMessageDefine.FoundNewApp;
-			System.Action callback = () =>
+			System.Action callbackYes = () =>
 			{
 				Application.OpenURL(message.InstallURL);
 			};
-			ShowMessageBox($"发现强制更新安装包 : {message.NewVersion}，请重新下载游戏", callback);
+
+			// 注意：如果是强制安装
+			if (message.ForceInstall)
+			{
+				ShowMessageBox($"发现新的安装包 : {message.NewVersion}，请重新下载游戏", callbackYes);
+			}
+			else
+			{
+				System.Action callbackNo = () =>
+				{
+					SendOperationEvent(EPatchOperation.SkipInstallNewApp);
+				};
+				ShowMessageBox($"发现新的安装包 : {message.NewVersion}，是否重新下载游戏", callbackYes, callbackNo);
+			}
 		}
 
 		else if (msg is PatchEventMessageDefine.FoundUpdateFiles)
@@ -153,7 +194,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.FoundUpdateFiles;
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.BeginingDownloadWebFiles);
+				SendOperationEvent(EPatchOperation.BeginDownloadWebFiles);
 			};
 			float sizeMB = message.TotalSizeBytes / 1048576f;
 			sizeMB = Mathf.Clamp(sizeMB, 0.1f, float.MaxValue);
@@ -204,7 +245,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.WebPatchManifestDownloadFailed;
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.TryDownloadWebPatchManifest);
+				SendOperationEvent(EPatchOperation.TryDownloadPatchManifest);
 			};
 			ShowMessageBox($"清单下载失败", callback);
 		}
@@ -218,7 +259,7 @@ public class PatchWindow
 	/// <summary>
 	/// 显示对话框
 	/// </summary>
-	private void ShowMessageBox(string content, System.Action clickCallback)
+	private void ShowMessageBox(string content, System.Action yes, System.Action no = null)
 	{
 		// 尝试获取一个可用的对话框
 		MessageBox msgBox = null;
@@ -236,13 +277,16 @@ public class PatchWindow
 		if (msgBox == null)
 		{
 			msgBox = new MessageBox();
-			var cloneObject = GameObject.Instantiate(_messageBoxObj, _messageBoxObj.transform.parent);
+			var cloneObject = GameObject.Instantiate(_messageBoxYesObj, _messageBoxYesObj.transform.parent);
 			msgBox.Create(cloneObject);
 			_msgBoxList.Add(msgBox);
 		}
 
 		// 显示对话框
-		msgBox.Show(content, clickCallback);
+		if (no == null)
+			msgBox.Show(content, yes);
+		else
+			msgBox.Show(content, yes, no);
 	}
 
 	/// <summary>
