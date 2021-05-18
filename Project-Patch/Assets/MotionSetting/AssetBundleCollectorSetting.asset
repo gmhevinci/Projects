@@ -29,7 +29,7 @@ MonoBehaviour:
     PackRuleName: PackExplicit
     FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-    AssetTags: 
+    AssetTags: panel
   - CollectDirectory: Assets/GameRes/UITexture/
     PackRuleName: PackDirectory
     FilterRuleName: CollectAll

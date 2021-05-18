@@ -165,7 +165,8 @@ public class GameLauncher : MonoBehaviour
 			patchCreateParam.VerifyLevel = EVerifyLevel.Size;
 			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
-			patchCreateParam.AutoDownloadDLC = new string[] { "entity" };
+			patchCreateParam.AutoDownloadDLC = new string[] { "panel" };
+			patchCreateParam.AutoDownloadBuildinDLC = true;
 			patchCreateParam.MaxNumberOnLoad = 4;
 
 			PatchManager patchManager = MotionEngine.CreateModule<PatchManager>(patchCreateParam);
