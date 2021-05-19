@@ -16,6 +16,14 @@ using MotionFramework.Pool;
 
 public class GameLauncher : MonoBehaviour
 {
+	private class WebPost
+	{
+		public string AppVersion; //应用程序内置版本
+		public int ServerID; //最近登录的服务器ID
+		public int ChannelID; //渠道ID
+		public string DeviceUID; //设备唯一ID
+		public int TestFlag; //测试标记
+	}
 	public enum EQuality
 	{
 		Default,
@@ -157,11 +165,18 @@ public class GameLauncher : MonoBehaviour
 			serverInfo.AddServerInfo(RuntimePlatform.Android, $"{webServer}/WEB/Android/GameVersion.php", $"{cdnServer}/CDN/Android");
 			serverInfo.AddServerInfo(RuntimePlatform.IPhonePlayer, $"{webServer}/WEB/Iphone/GameVersion.php", $"{cdnServer}/CDN/Iphone");
 
+			// 向WEB服务器投递的数据
+			WebPost post = new WebPost
+			{
+				AppVersion = Application.version,
+				ServerID = PlayerPrefs.GetInt("SERVER_ID_KEY", 0),
+				ChannelID = 0,
+				DeviceUID = string.Empty,
+				TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0)
+			};
+
 			var patchCreateParam = new PatchManager.CreateParameters();
-			patchCreateParam.ServerID = PlayerPrefs.GetInt("SERVER_ID_KEY", 0);
-			patchCreateParam.ChannelID = 0;
-			patchCreateParam.DeviceUID = string.Empty;
-			patchCreateParam.TestFlag = PlayerPrefs.GetInt("TEST_FLAG_KEY", 0);
+			patchCreateParam.WebPoseContent = JsonUtility.ToJson(post);
 			patchCreateParam.VerifyLevel = EVerifyLevel.Size;
 			patchCreateParam.ServerInfo = serverInfo;
 			patchCreateParam.VariantRules = variantRules;
