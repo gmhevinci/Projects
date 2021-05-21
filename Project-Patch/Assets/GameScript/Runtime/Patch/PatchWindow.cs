@@ -119,7 +119,7 @@ public class PatchWindow
 		_eventGroup.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.FoundNewApp>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.FoundUpdateFiles>(OnHandleEvent);
-		_eventGroup.AddListener<PatchEventMessageDefine.DownloadFilesProgress>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.DownloadProgressUpdate>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionRequestFailed>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.WebPatchManifestDownloadFailed>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.WebFileDownloadFailed>(OnHandleEvent);
@@ -183,7 +183,7 @@ public class PatchWindow
 			{
 				System.Action callbackNo = () =>
 				{
-					SendOperationEvent(EPatchOperation.SkipInstallNewApp);
+					SendOperationEvent(EPatchOperation.BeginDownloadPatchManifest);
 				};
 				ShowMessageBox($"发现新的安装包 : {message.NewVersion}，是否重新下载游戏", callbackYes, callbackNo);
 			}
@@ -202,9 +202,9 @@ public class PatchWindow
 			ShowMessageBox($"发现新版本需要更新 : 一共{message.TotalCount}个文件，总大小{totalSizeMB}MB", callback);
 		}
 
-		else if (msg is PatchEventMessageDefine.DownloadFilesProgress)
+		else if (msg is PatchEventMessageDefine.DownloadProgressUpdate)
 		{
-			var message = msg as PatchEventMessageDefine.DownloadFilesProgress;
+			var message = msg as PatchEventMessageDefine.DownloadProgressUpdate;
 			_slider.value = (float)message.CurrentDownloadCount / message.TotalDownloadCount;
 			string currentSizeMB = (message.CurrentDownloadSizeBytes / 1048576f).ToString("f1");
 			string totalSizeMB = (message.TotalDownloadSizeBytes / 1048576f).ToString("f1");
@@ -242,12 +242,16 @@ public class PatchWindow
 
 		else if (msg is PatchEventMessageDefine.WebPatchManifestDownloadFailed)
 		{
-			var message = msg as PatchEventMessageDefine.WebPatchManifestDownloadFailed;
 			System.Action callback = () =>
 			{
 				SendOperationEvent(EPatchOperation.TryDownloadPatchManifest);
 			};
 			ShowMessageBox($"清单下载失败", callback);
+		}
+
+		else if(msg is PatchEventMessageDefine.WebPatchManifestDownloadOK)
+		{
+			SendOperationEvent(EPatchOperation.BeginGetDownloadList);
 		}
 
 		else
