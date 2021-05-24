@@ -209,8 +209,8 @@ public class GameLauncher : MonoBehaviour
 		else
 		{
 			// 初始化补丁窗口
-			yield return PatchWindow.Instance.InitializeAsync();
-			WaitForSeconds waiting = new WaitForSeconds(1f);
+			PatchWindow.Instance.Initialize();
+			WaitForSeconds waiting = new WaitForSeconds(0.5f);
 			yield return waiting;
 
 			// 开始补丁更新流程
@@ -226,12 +226,12 @@ public class GameLauncher : MonoBehaviour
 		if (msg is PatchEventMessageDefine.PatchStatesChange)
 		{
 			var message = msg as PatchEventMessageDefine.PatchStatesChange;
-
-			// 补丁下载完毕
-			// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源。
 			if (message.CurrentStates == EPatchStates.PatchDone)
 			{
+				// 销毁补丁窗口
 				PatchWindow.Instance.Destroy();
+
+				// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源。
 				ResourceManager.Instance.UnloadAllAssets();
 
 				// 开始游戏

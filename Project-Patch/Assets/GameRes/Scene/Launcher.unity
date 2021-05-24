@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SimulationOnEditor: 0
-  SkipCDN: 1
+  SkipCDN: 0
   Quality: 1
   Language: 1
 --- !u!4 &1281760861

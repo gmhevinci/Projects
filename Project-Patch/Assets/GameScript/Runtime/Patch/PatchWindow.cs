@@ -82,7 +82,6 @@ public class PatchWindow
 	}
 
 
-	private AssetOperationHandle _handle;
 	private readonly EventGroup _eventGroup = new EventGroup();
 	private readonly List<MessageBox> _msgBoxList = new List<MessageBox>();
 
@@ -95,20 +94,13 @@ public class PatchWindow
 
 
 	/// <summary>
-	/// 异步初始化
+	/// 初始化
 	/// </summary>
-	/// <returns></returns>
-	public IEnumerator InitializeAsync()
+	public void Initialize()
 	{
-		// 下载面板
-		string location = "UIPanel/PatchWindow";
-		_handle = ResourceManager.Instance.LoadAssetAsync<GameObject>(location);
-		yield return _handle;
+		var prefab = Resources.Load<GameObject>("PatchWindow");
+		_uiRoot = GameObject.Instantiate(prefab);
 
-		if (_handle.AssetObject == null)
-			throw new Exception("PatchWindow load failed.");
-
-		_uiRoot = _handle.InstantiateObject;
 		_manifest = _uiRoot.GetComponent<UIManifest>();
 		_slider = _manifest.GetUIComponent<Slider>("PatchWindow/UIWindow/Slider");
 		_tips = _manifest.GetUIComponent<Text>("PatchWindow/UIWindow/Slider/txt_tips");
@@ -138,8 +130,6 @@ public class PatchWindow
 			GameObject.Destroy(_uiRoot);
 			_uiRoot = null;
 		}
-
-		_handle.Release();
 	}
 
 	/// <summary>
