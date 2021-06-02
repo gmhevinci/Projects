@@ -232,7 +232,7 @@ public class GameLauncher : MonoBehaviour
 				PatchWindow.Instance.Destroy();
 
 				// 注意：在补丁下载结束之后，一定要强制释放资源管理器里所有的资源。
-				ResourceManager.Instance.UnloadAllAssets();
+				ResourceManager.Instance.ForceUnloadAllAssets();
 
 				// 开始游戏
 				StartGame();
