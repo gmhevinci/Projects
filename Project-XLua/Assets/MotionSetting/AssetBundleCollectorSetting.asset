@@ -16,15 +16,17 @@ MonoBehaviour:
   ShadersBundleName: shaders
   Collectors:
   - CollectDirectory: Assets/GameRes/Entity/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/Lua/
-    PackRuleClassName: PackDirectory
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
+    AssetTags: 
   - CollectDirectory: Assets/GameRes/Scene/
-    PackRuleClassName: PackExplicit
-    FilterRuleClassName: CollectAll
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-  DLCFiles: []
+    AssetTags: 
