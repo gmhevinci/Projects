@@ -144,7 +144,7 @@ public class PatchWindow
 				_tips.text = "正在请求最新游戏版本";
 			else if (message.CurrentStates == EPatchStates.RequestPatchManifest)
 				_tips.text = "正在下载新的补丁清单";
-			else if (message.CurrentStates == EPatchStates.GetDonwloadList)
+			else if (message.CurrentStates == EPatchStates.GetDownloadList)
 				_tips.text = "正在准备下载列表";
 			else if (message.CurrentStates == EPatchStates.DownloadWebFiles)
 				_tips.text = "正在下载更新文件";
@@ -173,7 +173,7 @@ public class PatchWindow
 			{
 				System.Action callbackNo = () =>
 				{
-					SendOperationEvent(EPatchOperation.BeginGetDownloadList);
+					HandlePatchOperation(EPatchOperation.BeginGetDownloadList);
 				};
 				ShowMessageBox($"发现新的安装包 : {message.NewVersion}，是否重新下载游戏", callbackYes, callbackNo);
 			}
@@ -184,7 +184,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.FoundUpdateFiles;
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.BeginDownloadWebFiles);
+				HandlePatchOperation(EPatchOperation.BeginDownloadWebFiles);
 			};
 			float sizeMB = message.TotalSizeBytes / 1048576f;
 			sizeMB = Mathf.Clamp(sizeMB, 0.1f, float.MaxValue);
@@ -205,7 +205,7 @@ public class PatchWindow
 		{
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.TryRequestGameVersion);
+				HandlePatchOperation(EPatchOperation.TryRequestGameVersion);
 			};
 			ShowMessageBox($"请求最新游戏版本失败，请检查网络状况", callback);
 		}
@@ -214,7 +214,7 @@ public class PatchWindow
 		{
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.TryRequestPatchManifest);
+				HandlePatchOperation(EPatchOperation.TryRequestPatchManifest);
 			};
 			ShowMessageBox($"请求最新的清单失败，请检查网络状况", callback);
 		}
@@ -224,7 +224,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.WebFileDownloadFailed;
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.TryDownloadWebFiles);
+				HandlePatchOperation(EPatchOperation.TryDownloadWebFiles);
 			};
 			ShowMessageBox($"文件下载失败 : {message.Name}", callback);
 		}
@@ -234,7 +234,7 @@ public class PatchWindow
 			var message = msg as PatchEventMessageDefine.WebFileCheckFailed;
 			System.Action callback = () =>
 			{
-				SendOperationEvent(EPatchOperation.TryDownloadWebFiles);
+				HandlePatchOperation(EPatchOperation.TryDownloadWebFiles);
 			};
 			ShowMessageBox($"文件验证失败 : {message.Name}", callback);
 		}
@@ -279,12 +279,10 @@ public class PatchWindow
 	}
 
 	/// <summary>
-	/// 发送事件
+	/// 处理请求
 	/// </summary>
-	private void SendOperationEvent(EPatchOperation operation)
+	private void HandlePatchOperation(EPatchOperation operation)
 	{
-		PatchEventMessageDefine.OperationEvent msg = new PatchEventMessageDefine.OperationEvent();
-		msg.operation = operation;
-		EventManager.Instance.SendMessage(msg);
+		PatchManager.Instance.HandleOperation(operation);
 	}
 }

@@ -24,27 +24,41 @@ public class GameLauncher : MonoBehaviour
 		public string DeviceUID; //设备唯一ID
 		public int TestFlag; //测试标记
 	}
-	public enum EQuality
+	private class WebResponse
 	{
-		Default,
-		HD,
+#pragma warning disable 0649
+		public string GameVersion; //当前游戏版本号
+		public int ResourceVersion; //当前资源版本
+		public bool FoundNewApp; //是否发现了新的安装包
+		public bool ForceInstall; //是否需要强制用户安装
+		public string AppURL; //App安装的地址
+#pragma warning restore 0649
 	}
-	public enum ELanguage
+	private class MyGameVersionParser : IGameVersionParser
 	{
-		Default,
-		EN,
-		KR,
+		public Version GameVersion { private set; get; }
+		public int ResourceVersion { private set; get; }
+		public bool FoundNewApp { private set; get; }
+		public bool ForceInstall { private set; get; }
+		public string AppURL { private set; get; }
+
+		void IGameVersionParser.ParseContent(string content)
+		{
+			WebResponse response = JsonUtility.FromJson<WebResponse>(content);
+			GameVersion = new Version(response.GameVersion);
+			ResourceVersion = response.ResourceVersion;
+			FoundNewApp = response.FoundNewApp;
+			ForceInstall = response.ForceInstall;
+			AppURL = response.AppURL;
+		}
 	}
+
 
 	[Tooltip("在编辑器下模拟运行")]
 	public bool SimulationOnEditor = false;
 
 	[Tooltip("是否跳过CDN服务器")]
 	public bool SkipCDN = false;
-
-	public EQuality Quality = EQuality.Default;
-	public ELanguage Language = ELanguage.Default;
-
 
 	void Awake()
 	{
@@ -132,25 +146,11 @@ public class GameLauncher : MonoBehaviour
 		// 创建事件管理器
 		MotionEngine.CreateModule<EventManager>();
 
-		// 创建变体规则集合
-		var variantRules = new List<VariantRule>();
-		{
-			var rule1 = new VariantRule();
-			rule1.VariantGroup = new List<string>() { "EN", "KR" };
-			rule1.TargetVariant = Language == ELanguage.Default ? VariantRule.DefaultTag : Language.ToString();
-			variantRules.Add(rule1);
-
-			var rule2 = new VariantRule();
-			rule2.VariantGroup = new List<string>() { "HD" };
-			rule2.TargetVariant = Quality == EQuality.Default ? VariantRule.DefaultTag : Quality.ToString();
-			variantRules.Add(rule2);
-		}
-
 		// 资源服务接口
 		IBundleServices bundleServices;
 		if (SkipCDN)
 		{
-			var localBundleServices = new LocalBundleServices(variantRules);
+			var localBundleServices = new LocalBundleServices();
 			yield return localBundleServices.InitializeAsync(SimulationOnEditor);
 			bundleServices = localBundleServices;
 		}
@@ -176,10 +176,10 @@ public class GameLauncher : MonoBehaviour
 			};
 
 			var patchCreateParam = new PatchManager.CreateParameters();
+			patchCreateParam.GameVersionParser = new MyGameVersionParser();
 			patchCreateParam.WebPoseContent = JsonUtility.ToJson(post);
 			patchCreateParam.VerifyLevel = EVerifyLevel.Size;
 			patchCreateParam.ServerInfo = serverInfo;
-			patchCreateParam.VariantRules = variantRules;
 			patchCreateParam.AutoDownloadDLC = new string[] { "panel" };
 			patchCreateParam.AutoDownloadBuildinDLC = true;
 			patchCreateParam.MaxNumberOnLoad = 4;
@@ -189,7 +189,6 @@ public class GameLauncher : MonoBehaviour
 			bundleServices = MotionEngine.GetModule<PatchManager>();
 
 			EventManager.Instance.AddListener<PatchEventMessageDefine.PatchStatesChange>(OnHandleEventMessage);
-			EventManager.Instance.AddListener<PatchEventMessageDefine.OperationEvent>(OnHandleEventMessage);
 		}
 
 		// 创建资源管理器
@@ -237,10 +236,6 @@ public class GameLauncher : MonoBehaviour
 				// 开始游戏
 				StartGame();
 			}
-		}
-		else if (msg is PatchEventMessageDefine.OperationEvent)
-		{
-			PatchManager.Instance.HandleEventMessage(msg);
 		}
 	}
 
