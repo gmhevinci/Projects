@@ -12,41 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc54f0173b27fb40aee29e7eb3364da, type: 3}
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
-  IsCollectAllShaders: 1
+  IsCollectAllShaders: 0
   ShadersBundleName: shaders
   Collectors:
   - CollectDirectory: Assets/GameRes/Lua/
-    PackRuleName: PackExplicit
+    PackRuleName: PackDirectory
     FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-    AssetTags: 
-  - CollectDirectory: Assets/GameRes/UIAtlas/
-    PackRuleName: PackExplicit
-    FilterRuleName: CollectAll
-    DontWriteAssetPath: 0
-    AssetTags: 
+    AssetTags: buildin
   - CollectDirectory: Assets/GameRes/UIPanel/
     PackRuleName: PackExplicit
     FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-    AssetTags: 
+    AssetTags: panel
   - CollectDirectory: Assets/GameRes/UITexture/
-    PackRuleName: PackDirectory
-    FilterRuleName: CollectAll
-    DontWriteAssetPath: 0
-    AssetTags: 
-  - CollectDirectory: Assets/GameRes/Entity/
     PackRuleName: PackExplicit
     FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-    AssetTags: 
+    AssetTags: texture
+  - CollectDirectory: Assets/GameRes/Entity/Level1/
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
+    DontWriteAssetPath: 0
+    AssetTags: level1
+  - CollectDirectory: Assets/GameRes/Entity/Level2/
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
+    DontWriteAssetPath: 0
+    AssetTags: level2
+  - CollectDirectory: Assets/GameRes/Entity/Level3/
+    PackRuleName: PackExplicit
+    FilterRuleName: CollectAll
+    DontWriteAssetPath: 0
+    AssetTags: level3
   - CollectDirectory: Assets/GameRes/Scene/
     PackRuleName: PackExplicit
     FilterRuleName: CollectAll
     DontWriteAssetPath: 0
-    AssetTags: 
-  - CollectDirectory: Assets/GameArt/Panel/Sprite/
-    PackRuleName: PackDirectory
-    FilterRuleName: CollectAll
-    DontWriteAssetPath: 1
-    AssetTags: 
+    AssetTags: buildin

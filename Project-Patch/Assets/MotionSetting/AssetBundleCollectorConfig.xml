@@ -1,14 +1,14 @@
 <root>
 	
-	<!--注释-->
-	<Collector Directory="Assets/GameRes/Lua/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags=""/>
-	<Collector Directory="Assets/GameRes/UIAtlas/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags=""/>
-	<Collector Directory="Assets/GameRes/UIPanel/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags=""/>
-	<Collector Directory="Assets/GameRes/UITexture/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags=""/>
-	<Collector Directory="Assets/GameRes/Entity/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="entity"/>
-	<Collector Directory="Assets/GameRes/Scene/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags=""/>
+	<!--内置资源-->
+	<Collector Directory="Assets/GameRes/Lua/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="buildin"/>
+	<Collector Directory="Assets/GameRes/Scene/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="buildin"/>
 	
-	<!--精灵-->
-	<Collector Directory="Assets/GameArt/Panel/Sprite/" PackRule="PackDirectory" FilterRule="CollectAll" DontWriteAssetPath="1" AssetTags=""/>
+	<!--热更资源-->
+	<Collector Directory="Assets/GameRes/UIPanel/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="panel"/>
+	<Collector Directory="Assets/GameRes/UITexture/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="texture"/>
+	<Collector Directory="Assets/GameRes/Entity/Level1/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="level1"/>
+	<Collector Directory="Assets/GameRes/Entity/Level2/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="level2"/>
+	<Collector Directory="Assets/GameRes/Entity/Level3/" PackRule="PackExplicit" FilterRule="CollectAll" DontWriteAssetPath="0" AssetTags="level3"/>
 	
 </root>

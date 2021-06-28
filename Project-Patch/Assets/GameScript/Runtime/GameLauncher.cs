@@ -176,11 +176,12 @@ public class GameLauncher : MonoBehaviour
 			};
 
 			var patchCreateParam = new PatchManager.CreateParameters();
+			patchCreateParam.IgnoreResourceVersion = false;
 			patchCreateParam.GameVersionParser = new MyGameVersionParser();
 			patchCreateParam.WebPoseContent = JsonUtility.ToJson(post);
 			patchCreateParam.VerifyLevel = EVerifyLevel.Size;
 			patchCreateParam.ServerInfo = serverInfo;
-			patchCreateParam.AutoDownloadDLC = new string[] { "panel" };
+			patchCreateParam.AutoDownloadDLC = new string[] { "panel", "level1" };
 			patchCreateParam.AutoDownloadBuildinDLC = true;
 			patchCreateParam.MaxNumberOnLoad = 4;
 
@@ -196,9 +197,12 @@ public class GameLauncher : MonoBehaviour
 		resourceCreateParam.LocationRoot = GameDefine.AssetRootPath;
 		resourceCreateParam.SimulationOnEditor = SimulationOnEditor;
 		resourceCreateParam.BundleServices = bundleServices;
-		resourceCreateParam.DecryptServices = new Decrypter();
+		resourceCreateParam.DecryptServices = new AssetDecrypter();
 		resourceCreateParam.AutoReleaseInterval = 1f;
 		MotionEngine.CreateModule<ResourceManager>(resourceCreateParam);
+
+		// 创建场景管理器
+		MotionEngine.CreateModule<SceneManager>();
 
 		if (SkipCDN)
 		{
