@@ -170,7 +170,7 @@ public class GameLauncher : MonoBehaviour
 			string cdnServerIP = "http://127.0.0.1";
 			string defaultWebServer = $"{webServerIP}/WEB/PC/GameVersion.php";
 			string defaultCDNServer = $"{cdnServerIP}/CDN/PC";
-			RemoteServerInfo serverInfo = new RemoteServerInfo(defaultWebServer, defaultCDNServer);
+			RemoteServerInfo serverInfo = new RemoteServerInfo(null, defaultWebServer, defaultCDNServer);
 			serverInfo.AddServerInfo(RuntimePlatform.Android, $"{webServerIP}/WEB/Android/GameVersion.php", $"{cdnServerIP}/CDN/Android", $"{cdnServerIP}/CDN/Android");
 			serverInfo.AddServerInfo(RuntimePlatform.IPhonePlayer, $"{webServerIP}/WEB/Iphone/GameVersion.php", $"{cdnServerIP}/CDN/Iphone", $"{cdnServerIP}/CDN/Iphone");
 
