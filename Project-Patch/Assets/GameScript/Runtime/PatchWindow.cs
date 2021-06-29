@@ -113,6 +113,7 @@ public class PatchWindow
 		_eventGroup.AddListener<PatchEventMessageDefine.FoundUpdateFiles>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.DownloadProgressUpdate>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionRequestFailed>(OnHandleEvent);
+		_eventGroup.AddListener<PatchEventMessageDefine.GameVersionParseFailed>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.PatchManifestRequestFailed>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.WebFileDownloadFailed>(OnHandleEvent);
 		_eventGroup.AddListener<PatchEventMessageDefine.WebFileCheckFailed>(OnHandleEvent);
@@ -208,6 +209,15 @@ public class PatchWindow
 				HandlePatchOperation(EPatchOperation.TryRequestGameVersion);
 			};
 			ShowMessageBox($"请求最新游戏版本失败，请检查网络状况", callback);
+		}
+
+		else if(msg is PatchEventMessageDefine.GameVersionParseFailed)
+		{
+			System.Action callback = () =>
+			{
+				HandlePatchOperation(EPatchOperation.TryRequestGameVersion);
+			};
+			ShowMessageBox($"解析游戏版本失败，请联系官方客服", callback);
 		}
 
 		else if (msg is PatchEventMessageDefine.PatchManifestRequestFailed)

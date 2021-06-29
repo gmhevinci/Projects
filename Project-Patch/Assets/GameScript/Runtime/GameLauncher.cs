@@ -42,14 +42,23 @@ public class GameLauncher : MonoBehaviour
 		public bool ForceInstall { private set; get; }
 		public string AppURL { private set; get; }
 
-		void IGameVersionParser.ParseContent(string content)
+		bool IGameVersionParser.ParseContent(string content)
 		{
-			WebResponse response = JsonUtility.FromJson<WebResponse>(content);
-			GameVersion = new Version(response.GameVersion);
-			ResourceVersion = response.ResourceVersion;
-			FoundNewApp = response.FoundNewApp;
-			ForceInstall = response.ForceInstall;
-			AppURL = response.AppURL;
+			try
+			{
+				WebResponse response = JsonUtility.FromJson<WebResponse>(content);
+				GameVersion = new Version(response.GameVersion);
+				ResourceVersion = response.ResourceVersion;
+				FoundNewApp = response.FoundNewApp;
+				ForceInstall = response.ForceInstall;
+				AppURL = response.AppURL;
+				return true;
+			}
+			catch(Exception)
+			{
+				Debug.LogError($"Parse web response failed : {content}");
+				return false;
+			}
 		}
 	}
 
