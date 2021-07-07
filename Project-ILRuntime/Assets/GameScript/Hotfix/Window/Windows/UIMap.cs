@@ -39,11 +39,12 @@ namespace Hotfix
 					_animRectTrans.transform.TweenScaleTo(0.8f, Vector3.one).SetEase(TweenEase.Bounce.EaseOut),
 					_animRectTrans.transform.TweenAnglesTo(0.4f, new Vector3(0, 0, 720))
 					);
-				TweenGrouper.Play(tween);
+				TweenManager.Instance.Play(tween, this.Go);
 			}
 
 			// 闪烁动画
-			TweenGrouper.Play(_animImg.TweenColor(0.5f, Color.green, Color.red).SetLoop(ETweenLoop.PingPong));
+			var blinkTween = _animImg.TweenColor(0.5f, Color.green, Color.red).SetLoop(ETweenLoop.PingPong);
+			TweenManager.Instance.Play(blinkTween, this.Go);
 		}
 		public override void OnUpdate()
 		{
@@ -65,14 +66,14 @@ namespace Hotfix
 			tween.Append(_animRectTrans.TweenAnchoredPositionTo(0.5f, new Vector2(800, 0)).SetLerp(LerpBezierFun));
 			tween.Append(_animRectTrans.transform.TweenScaleTo(0.5f, Vector3.zero).SetEase(TweenEase.Bounce.EaseOut));
 			tween.Execute(() => { UITools.CloseWindow<UIMap>(); });
-			TweenGrouper.Play(tween);
+			TweenManager.Instance.Play(tween, this.Go);
 		}
 		private void OnClickShake()
 		{
 			var desktop = WindowManager.Instance.Root.UIDesktop;
 			var tween = desktop.transform.ShakePosition(2f, new Vector3(10, 10, 0)).SetEase(TweenEase.Quad.EaseInOut);
 			tween.SetDispose(() => { desktop.transform.position = Vector3.zero; });  //注意：震动节点会在面板销毁的时候一起移除，所以需要归位
-			TweenGrouper.Play(tween);
+			TweenManager.Instance.Play(tween, this.Go);
 		}
 
 		// 贝塞尔
